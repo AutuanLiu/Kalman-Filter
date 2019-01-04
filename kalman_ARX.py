@@ -19,7 +19,7 @@ timer.start()
 
 # !Kalman4ARX 算法
 # get data
-file_path = './kalman_filter/data/linear_signals5D_noise1.mat'
+file_path = './data/linear_signals5D_noise1.mat'
 data = get_mat_data(file_path, 'linear_signals')
 
 # !数据标准化要对整体数据都做
@@ -54,32 +54,32 @@ A_coef /= n_trial
 
 # 保存结果2D
 # Write the array to disk
-file_path0 = Path('./kalman_filter/data/y_coef.txt')
+file_path0 = Path('./data/y_coef.txt')
 save_2Darray(file_path0, y_coef)
 
 # 保存结果3D
 # Write the array to disk
-file_path1 = Path('./kalman_filter/data/A_coef.txt')
+file_path1 = Path('./data/A_coef.txt')
 save_3Darray(file_path1, A_coef)
 
 # load data(real coef)
-# file_path2 = Path('./kalman_filter/data/linear_real_coef.txt')
+# file_path2 = Path('./data/linear_real_coef.txt')
 # real_coef = np.loadtxt(file_path2).reshape(A_coef.shape)
 # print(real_coef - A_coef)
 
 # make func
-est_model = make_linear_func(A_coef, var_name='x', fname='./kalman_filter/data/linear_est_model.txt')
+est_model = make_linear_func(A_coef, var_name='x', fname='./data/linear_est_model.txt')
 print(est_model)
 
 timer.stop()
 
 # !线性模型 Kalmal4FROLS 算法(matlab 标准化)
-terms_path = './kalman_filter/data/nor_linear_terms.mat'
+terms_path = './data/nor_linear_terms.mat'
 term = Selector(terms_path)
 terms_repr = term.make_terms()
 
 # *保存候选项集合
-fname = './kalman_filter/data/linear_candidate_terms.txt'
+fname = './data/linear_candidate_terms.txt'
 np.savetxt(fname, terms_repr, fmt='%s')
 
 # *selection
@@ -92,16 +92,16 @@ y_coef = kf.estimate_coef()
 print(y_coef)
 
 # *估计模型生成
-est_model = make_func4K4FROLS(y_coef, candidate_terms, Kalman_S_No, fname='./kalman_filter/data/linear_Kalmal4FROLS_est_model.txt')
+est_model = make_func4K4FROLS(y_coef, candidate_terms, Kalman_S_No, fname='./data/linear_Kalmal4FROLS_est_model.txt')
 print(est_model)
 
 # !线性模型 torch4FROLS 算法(matlab 标准化)
-terms_path = './kalman_filter/data/nor_linear_terms.mat'
+terms_path = './data/nor_linear_terms.mat'
 term = Selector(terms_path)
 terms_repr = term.make_terms()
 
 # *保存候选项集合
-fname = './kalman_filter/data/linear_candidate_terms.txt'
+fname = './data/linear_candidate_terms.txt'
 np.savetxt(fname, terms_repr, fmt='%s')
 
 # *selection
@@ -114,5 +114,5 @@ y_coef = kf.estimate_coef()
 print(y_coef)
 
 # *估计模型生成
-est_model = make_func4K4FROLS(y_coef, candidate_terms, Kalman_S_No, fname='./kalman_filter/data/linear_torch4FROLS_est_model.txt')
+est_model = make_func4K4FROLS(y_coef, candidate_terms, Kalman_S_No, fname='./data/linear_torch4FROLS_est_model.txt')
 print(est_model)
