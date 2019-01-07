@@ -49,7 +49,7 @@ setup(
     description='Kalman filter based coefficient estimation toolbox.',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    package_data={'data': ['*']},
+    package_data={'data': ['*.mat']},
     include_package_data=True,
     author='Autuan Liu',
     author_email='autuanliu@g163.com',
@@ -58,7 +58,7 @@ setup(
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
-        'Natural Language :: English, Chinese',
+        'Natural Language :: English',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: Implementation :: CPython',

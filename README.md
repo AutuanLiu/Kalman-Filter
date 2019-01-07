@@ -5,6 +5,7 @@ Email: autuanliu@163.com
 ```
 
 [中文文档](https://www.yuque.com/xk6dxn/drboi7)
+[Wiki](https://github.com/AutuanLiu/Kalman-Filter/wiki)
 
 - [Kalman filter estimation](#kalman-filter-estimation)
   - [1 Theory](#1-theory)
@@ -125,18 +126,19 @@ $$P_k\leftarrow (I-G_k H_k)P_k$$
 
 ```bash
 $ cloc .
-      37 text files.
-      37 unique files.
-      24 files ignored.
+      54 text files.
+      54 unique files.
+      39 files ignored.
 
-github.com/AlDanial/cloc v 1.80  T=0.50 s (40.0 files/s, 4418.0 lines/s)
+github.com/AlDanial/cloc v 1.80  T=0.50 s (54.0 files/s, 4876.0 lines/s)
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-Python                           9            300            506            573
+Python                          12            320            507            664
 MATLAB                           8             49            153            289
-Markdown                         3             98              0            241
+Markdown                         5            113              0            273
+JSON                             2              0              0             70
 -------------------------------------------------------------------------------
-SUM:                            20            447            659           1103
+SUM:                            27            482            660           1296
 -------------------------------------------------------------------------------
 ```
