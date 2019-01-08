@@ -27,7 +27,7 @@ jobs:
     displayName: 'Install dependencies'
 
   - script: |
-      python -m unittest test/*.py
+      python -m unittest
     displayName: 'pytest'
 
   - task: PublishTestResults@2
