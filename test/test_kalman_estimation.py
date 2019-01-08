@@ -6,7 +6,7 @@ from kalman_estimation import (Kalman4ARX, Kalman4FROLS, Selector,
                                get_mat_data, torch4FROLS)
 
 
-class TestKalman(unittest.TestCase):
+class Test_kalman_estimation(unittest.TestCase):
 
     def test_Kalman4ARX(self):
         file_path = 'data/linear_signals5D_noise1.mat'
