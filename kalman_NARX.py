@@ -8,7 +8,7 @@ Copyright:
 
 import numpy as np
 
-from core import (Kalman4FROLS, Selector, get_mat_data, make_func4K4FROLS, normalize, torch4FROLS)
+from kalman_estimation import (Kalman4FROLS, Selector, get_mat_data, make_func4K4FROLS, normalize, torch4FROLS)
 
 # !非线性模型
 # *非线性数据
