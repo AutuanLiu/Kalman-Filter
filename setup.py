@@ -13,7 +13,7 @@ import sys
 
 from setuptools import find_packages, setup
 
-version = '0.3.1'
+version = '0.3.2'
 
 if sys.argv[1] == 'release':
     if not distutils.spawn.find_executable('twine'):
@@ -48,7 +48,7 @@ with open('description.md') as f:
     long_description = f.read()
 
 setup(
-    name='kalman_estimation',
+    name='kalman-estimation',
     version=version,
     packages=find_packages(),
     install_requires=get_install_requires(),
@@ -58,7 +58,7 @@ setup(
     include_package_data=True,
     python_requires='>=3.5',
     author='Autuan Liu',
-    author_email='autuanliu@g163.com',
+    author_email='autuanliu@163.com',
     url='https://github.com/AutuanLiu/Kalman-Filter',
     license='MIT',
     classifiers=[
