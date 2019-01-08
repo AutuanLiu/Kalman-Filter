@@ -27,8 +27,7 @@ jobs:
     displayName: 'Install dependencies'
 
   - script: |
-      pip install pytest
-      pytest tests --doctest-modules --junitxml=junit/test-results.xml
+      python -m unittest test/*.py
     displayName: 'pytest'
 
   - task: PublishTestResults@2
