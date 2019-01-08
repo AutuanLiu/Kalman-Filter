@@ -8,7 +8,7 @@ Copyright:
 
 import numpy as np
 
-from core import (Kalman4ARX, Kalman4FROLS, Selector, get_mat_data, make_func4K4FROLS, make_linear_func, normalize, torch4FROLS)
+from kalman_estimation import (Kalman4ARX, Kalman4FROLS, Selector, get_mat_data, make_func4K4FROLS, make_linear_func, normalize, torch4FROLS)
 
 # !Kalman4ARX 测试
 # timer = Timer()

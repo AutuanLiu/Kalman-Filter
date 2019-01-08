@@ -1,3 +1,11 @@
+"""setup
+
+Copyright:
+----------
+    Author: AutuanLiu
+    Date: 2019/01/08
+"""
+
 import distutils.spawn
 import shlex
 import subprocess
@@ -7,7 +15,7 @@ from setuptools import find_packages, setup
 
 import github2pypi
 
-version = '0.1.0'
+version = '0.2.0'
 
 if sys.argv[1] == 'release':
     if not distutils.spawn.find_executable('twine'):
@@ -42,7 +50,7 @@ with open('description.md') as f:
     long_description = github2pypi.replace_url(slug='AutuanLiu/Kalman-Filter', content=f.read())
 
 setup(
-    name='k4est',
+    name='kalman_estimation',
     version=version,
     packages=find_packages(),
     install_requires=get_install_requires(),
