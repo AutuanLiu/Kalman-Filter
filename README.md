@@ -3,6 +3,8 @@
 ```bash
 Email: autuanliu@163.com
 ```
+[![Build Status](https://dev.azure.com/AutuanLiu/Kalman%20Filter/_apis/build/status/AutuanLiu.Kalman-Filter?branchName=master&jobName=Test&configuration=Python36)](https://dev.azure.com/AutuanLiu/Kalman%20Filter/_build/latest?definitionId=1?branchName=master)
+
 
 [中文文档](https://www.yuque.com/xk6dxn/drboi7)
 [Wiki](https://github.com/AutuanLiu/Kalman-Filter/wiki)
