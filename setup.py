@@ -13,8 +13,6 @@ import sys
 
 from setuptools import find_packages, setup
 
-import github2pypi
-
 version = '0.2.0'
 
 if sys.argv[1] == 'release':
@@ -47,7 +45,7 @@ def get_install_requires():
 
 
 with open('description.md') as f:
-    long_description = github2pypi.replace_url(slug='AutuanLiu/Kalman-Filter', content=f.read())
+    long_description = f.read()
 
 setup(
     name='kalman_estimation',
