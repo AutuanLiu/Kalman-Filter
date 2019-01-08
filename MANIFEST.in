@@ -1,4 +1,5 @@
 include requirements.txt
+include description.md
 include data/*.mat
 exclude github2pypi/*
 exclude test/*
