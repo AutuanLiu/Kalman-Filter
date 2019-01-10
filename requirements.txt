@@ -1,0 +1,7 @@
+numpy
+matplotlib
+filterpy
+scipy
+scikit-learn
+yapf
+torch>=1.0

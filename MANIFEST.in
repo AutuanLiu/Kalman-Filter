@@ -1,0 +1,6 @@
+include requirements.txt
+include description.md
+include kalman_estimation/*
+exclude github2pypi/*
+exclude data/*
+exclude examples/*
