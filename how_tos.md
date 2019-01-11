@@ -1,3 +1,4 @@
+## How to remove commit history?
 1. Checkout
 
    ```bash
@@ -33,3 +34,17 @@
    ```bash
    $ git push -f origin master
    ```
+
+## How to upload packages to PyPi
+1. 
+```bash
+$ python setup.py sdist &&
+```
+2.
+```bash
+$ python setup.py bdist_wheel
+```
+3.
+```bash
+$ twine upload dist/*
+```
