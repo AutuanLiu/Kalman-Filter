@@ -27,20 +27,20 @@ function [] = make_terms(flag, is_normalize, max_lag, scale_type, threshold)
     switch flag
         case 'linear'
             norder = 1;
-            data = load('./data/linear_signals5D_noise1.mat');      % linear signals
-            signals = data.linear_signals;
+            load(['data/', flag, '_signals5D_noise1.mat']);   % linear signals
+            signals = eval([flag, '_signals']);
         case 'nonlinear'
             norder = 2;
-            data = load('./data/nonlinear_signals5D_noise1.mat');   % nonlinear signals
-            signals = data.nonlinear_signals;
+            load(['data/', flag, '_signals5D_noise1.mat']);   % nonlinear signals
+            signals = eval([flag, '_signals']);
         case 'longlag_linear'
             norder = 1;
-            data = load('./data/longlag_linear_signals5D_noise1.mat');   % longlag linear signals
-            signals = data.longlag_linear_signals;
+            load(['data/', flag, '_signals5D_noise1.mat']);   % longlag linear signals
+            signals = eval([flag, '_signals']);
         case 'longlag_nonlinear'
             norder = 2;
-            data = load('./data/longlag_nonlinear_signals5D_noise1.mat');   % longlag nonlinear signals
-            signals = data.longlag_nonlinear_signals;
+            load(['data/', flag, '_signals5D_noise1.mat']);   % longlag nonlinear signals
+            signals = eval([flag, '_signals']);
         otherwise
             disp('Not Define!')
     end

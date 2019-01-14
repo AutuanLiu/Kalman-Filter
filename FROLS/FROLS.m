@@ -1,41 +1,21 @@
 % autuanliu@163.com
-% 2018年6月
+% 2019年1月
 % FROLS 的通用版本(与数据的维度无关)
-
-% 候选项的排列顺序所遵从的主要原则
-% 1. 线性项在前，非线性项在后
-% 2. 先从候选信号中选取，再从候选延迟中选取
-% 3. 先考虑简单形式再考虑复杂形势
-% 4. 统一取最大延迟
-% 5. 使用列向量来保存最后的估计系数
-% 6. 具体实现思路参看 <<P 矩阵的生成算法.md>>
-% 如 候选信号 y1, y2, y3 候选延迟 2(y1), 1(y2), 2(y3)[这里延迟就取2，所以候选延迟有1、2两种]
-% 非线性次数为 2，则具体的排列顺序为 {共27项}
-% 线性项:   y1(t-1), y1(t-2), y2(t-1), y2(t-2), y3(t-1), y3(t-2)  {6}
-% 非线性项: y1^2(t-1), y1(t-1)y1(t-2), y1^2(t-2);  {3}
-%           y1(t-1)y2(t-1), y1(t-1)y2(t-2), y1(t-2)y2(t-1), y1(t-2)y2(t-2);  {4}
-%           y1(t-1)y3(t-1), y1(t-1)y3(t-2), y1(t-2)y3(t-1), y1(t-2)y3(t-2);  {4}
-%           y2^2(t-1), y2(t-1)y2(t-2), y2^2(t-2);  {3}
-%           y2(t-1)y3(t-1), y2(t-1)y3(t-2), y2(t-2)y3(t-1), y2(t-2)y3(t-2);  {4}
-%           y3^2(t-1), y3(t-1)y3(t-2), y3^2(t-2);  {3}
 %
-% 候选项或者模型长度的设置问题处理
-% 当前输出项假如为 y1(t)，那么为了保证延迟项是有意义的，这里仿真数据点的个数应当为大于等于 N+max_lag
-% 其中 N 为实际使用的模型数据点长度, max_lag 为所有候选变量的最大延迟
 
 % 参考文献
 % 1. Billings S A, Chen S, Korenberg M J. Identification of MIMO non-linear systems using
 % a forward-regression orthogonal estimator[J]. International Journal of Control, 1989, 49(6):2157-2189.
 % 2. Billings S A. Nonlinear system identification : NARMAX methods in the time, frequency,
 % and spatio-temporal domains[M]. Wiley, 2013.
-% 
+%
 
-function [coff, yerror] = FROLS(norder, signals, lags, N, threshold, y)
+function [coff, yerror] = FROLS(norder, signals, max_lag, N, threshold, y)
     % 调用的函数： generateH、frols_fixed
     % generateH 和 frols_fixed 都是该主函数的辅助函数
     % norder: 非线性次数
     % signals: 信号数据 Npoint * ndim(信号个数)
-    % lags: 各个对应信号的延迟 1 * ndim(信号个数)
+    % max_lag: 最大时延
     % N: 实际使用的数据点的长度
     % threshold: 算法停止的阈值
     % y: 当前的输出信号或者对应信号(输出子系统) NN * 1
@@ -45,15 +25,14 @@ function [coff, yerror] = FROLS(norder, signals, lags, N, threshold, y)
     % H: 存储候选项的矩阵(候选项的排列顺序如上述讨论)，维度 N * M(信号长度 * 候选项个数)
     %
     global H lags_sum Hv; % 内部设置全局变量
-    lags_sum = sum(lags);
     % 候选向量不考虑误差项的系数，我们认为误差是一个常数
     % 候选向量的个数，-1是减去常数项(也可以看成是误差项的一部分)
     M = nchoosek(lags_sum + norder, norder) - 1;
     [NN, ndim] = size(signals);
+    lags_sum = ndim * max_lag;
     % 估计系数 实际上是按照真实位置把g重新组合了一下
 
     % 初始化过程
-    max_lag = max(lags);
     Hv = cell(norder, 1);
     coff = zeros(M, 1);    % 算法估计的系数
     yerror = zeros(NN, 1); % 算法估计的误差
@@ -65,7 +44,7 @@ function [coff, yerror] = FROLS(norder, signals, lags, N, threshold, y)
 
     % H 矩阵线性部分(base)
     for variable=1:ndim
-        for lag = 1:lags(variable)
+        for lag = 1:max_lag
             H(:, col_H) = signals((max_lag-lag+1):(max_lag-lag+N), variable);
             col_H = col_H + 1;
         end
