@@ -11,7 +11,7 @@ import datetime as dt
 
 import numpy as np
 
-__all__ = ['get_mat_data', 'normalize', 'save_2Darray', 'save_3Darray', 'Timer', 'make_linear_func', 'make_func4K4FROLS']
+__all__ = ['get_mat_data', 'get_txt_data', 'normalize', 'save_2Darray', 'save_3Darray', 'Timer', 'make_linear_func', 'make_func4K4FROLS']
 
 
 def get_mat_data(file_name, var_name):
@@ -28,6 +28,19 @@ def get_mat_data(file_name, var_name):
     import scipy.io as sio
     data_dict = sio.loadmat(file_name)
     return data_dict[var_name]
+
+
+def get_txt_data(file_name, delimiter=',', dtype=np.float32):
+    """从文件中读取出原始数据并转换为 np.array 类型
+
+    Args:
+        file_name (str): 数据存储的完整路径，如 'datastes/abc.mat'
+        delimiter (str, optional): Defaults to ','. 文件分隔符
+        dtype ([type], optional): Defaults to np.float32. 数据类型
+    """
+
+    data = np.loadtxt(file_name, delimiter=delimiter, dtype=dtype)
+    return data
 
 
 def normalize(data, scaler_type: str = 'MinMaxScaler'):

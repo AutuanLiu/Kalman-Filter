@@ -27,11 +27,10 @@ function [coff, yerror] = FROLS(norder, signals, max_lag, N, threshold, y)
     global H lags_sum Hv; % 内部设置全局变量
     % 候选向量不考虑误差项的系数，我们认为误差是一个常数
     % 候选向量的个数，-1是减去常数项(也可以看成是误差项的一部分)
-    M = nchoosek(lags_sum + norder, norder) - 1;
     [NN, ndim] = size(signals);
     lags_sum = ndim * max_lag;
+    M = nchoosek(lags_sum + norder, norder) - 1;
     % 估计系数 实际上是按照真实位置把g重新组合了一下
-
     % 初始化过程
     Hv = cell(norder, 1);
     coff = zeros(M, 1);    % 算法估计的系数

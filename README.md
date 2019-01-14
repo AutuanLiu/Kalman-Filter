@@ -36,6 +36,12 @@ Email: autuanliu@163.com
   - [Info](#info)
 
 Notes: **所有的原始数据文件可以在[百度云](https://pan.baidu.com/s/1Dem2PMWZEZYZbSmUsBq3aA)下载**
+
+* 安装
+```bash
+pip install kalman-estimation
+```
+
 ## 1 Theory
 
 ### 1.1 线性一维系统

@@ -36,9 +36,9 @@
    ```
 
 ## How to upload packages to PyPi
-1. 
+1.
 ```bash
-$ python setup.py sdist &&
+$ python setup.py sdist
 ```
 2.
 ```bash
