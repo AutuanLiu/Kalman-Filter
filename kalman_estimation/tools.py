@@ -107,3 +107,7 @@ def plot_grid_search(x, y, x_label, y_label, file_name):
     plt.ylabel(y_label)
     # save figure
     plt.savefig(f'./kalman_filter/images/{file_name}.png')
+
+
+def plot_terms_ERRs(terms_matrix, ERRs_matrix):
+    pass

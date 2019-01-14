@@ -1,6 +1,6 @@
 % autuanliu@163.com
 % 2018年12月10日
-% 
+%
 
 NN = 1030;
 ndim = 3;          % 信号的维度
@@ -28,4 +28,4 @@ signals = [y1, y2, y3];
 
 %% 测试
 [H, Hv] = buildH(signals, norder, max_lag);
-[Kalman_H, sparse_H, S, S_No] = term_selector(signals, norder, max_lag, H, threshold);
+[Kalman_H, sparse_H, S, S_No, ERRs] = term_selector(signals, norder, max_lag, H, threshold);

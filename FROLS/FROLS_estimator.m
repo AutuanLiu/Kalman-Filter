@@ -53,12 +53,16 @@ for m=data_type
     end
     % 估计系数并保存
     coef_est = [];
+    ERRs = [];
+    term_idxs = [];
     for ch=1:n_ch
-        [coff, ~] = FROLS(norder, signals, max_lag, N, threshold, signals(:, ch));
+        [coff, ~, term_idx, ERR] = FROLS(norder, signals, max_lag, N, threshold, signals(:, ch));
         coef_est = [coef_est; coff.'];
+        term_idxs = [term_idxs; term_idx];
+        ERRs = [ERRs; ERR];
     end
     % 保存估计系数
-    f_name = [root, 'FROLS_', flag, '_coef.mat'];
-    save(f_name, 'coef_est');
+    f_name = [root, 'FROLS_', flag, '_est.mat'];
+    save(f_name, 'coef_est', 'term_idxs', 'ERRs');
 end
 toc;

@@ -1,16 +1,17 @@
 % autuanliu@163.com
 % 2018年12月10日
-% 
+%
 
-function [L] = frols_fixed(y, P, threshold)
+function [L, ERR] = frols_fixed(y, P, threshold)
     % P: 维度大小为 N*M 的候选向量矩阵
-    % threshold: 递归停止条件 
+    % threshold: 递归停止条件
     % 所预测的序列 y, 即当前子系统 N * 1
-    % 
+    %
     % Returns:
     % L: 被选择的候选项下标
-    % 
-    
+    % ERR: error reduction ratio
+    %
+
     %%! 初始化部分
     [N, M] = size(P);
     W = zeros(N, M);         % 辅助候选向量矩阵满足 W=P*A^{-1}
@@ -29,7 +30,7 @@ function [L] = frols_fixed(y, P, threshold)
     W = P;
     A(1, 1) = 1;
     ERR = (y.' * W).^2 ./ (sigma * dot(W, W));
-    
+
     % 找出本次迭代应当被选择的候选项
     [C, I] = max(ERR(1, :)); % C为ERR最大值，I为该项的序列值
     chosenERR(1) = C;
@@ -51,22 +52,22 @@ function [L] = frols_fixed(y, P, threshold)
                     temp = temp + Q(:, k) * dot(P(:, i), Q(:, k)) / dot(Q(:, k), Q(:, k));
                 end
                 W(:, i) = P(:, i) - temp;
-                ERR(j, i) = dot(y, W(:, i))^2 / (sigma * dot(W(:, i), W(:, i))); % 计算ERR             
-            end        
+                ERR(j, i) = dot(y, W(:, i))^2 / (sigma * dot(W(:, i), W(:, i))); % 计算ERR
+            end
         end
 
         % 继续选择候选项
         [C, I] = max(ERR(j, :));
         chosenERR(j) = C;
         L(j) = I;
-        flag(I) = 1; 
+        flag(I) = 1;
         Q(:, j) = W(:, I);
         g(j) = dot(y, Q(:, j)) / dot(Q(:, j), Q(:, j));
         A(j, j) = 1;
         for k=1:(j-1)
             A(k, j) = dot(P(:, I), Q(:, k)) / dot(Q(:, k), Q(:, k));
         end
-        
+
         % 使用 ERR 和作为迭代终止条件
         % if sum(chosenERR(1, :)) > threshold
         %     break;
@@ -84,8 +85,9 @@ function [L] = frols_fixed(y, P, threshold)
         % end
     end
     %%
-    
+
     %! 考虑提前终止迭代的情况
     A = A(1:j, 1:j);
+    ERR = chosenERR(1, 1:5);
     return;
 end

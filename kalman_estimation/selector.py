@@ -26,12 +26,12 @@ class Selector:
         norder (int): 非线性次数
         max_lag (int): max lag.
         n_dim (int): the channel or dim of signals.
-        Kalman_H (np.array): 供 kalman 滤波器使用的候选项矩阵, 参看 matlab 代码实现
-        normalized_signals (np.array): 标准化之后的信号数据, 参看 matlab 代码实现
-        Hv (np.array): 基于 base(linear terms) 的候选项组合, 参看 matlab 代码实现
-        S_No (np.array): sparse matrix, 表示选择候选项的下标或索引, 参看 matlab 代码实现
-        candidate_terms (np.array): 候选项集合
-        Kalman_S_No (np.array): 和 Kalman_H 相匹配的候选项选择下标
+        Kalman_H (np.ndarray): 供 kalman 滤波器使用的候选项矩阵, 参看 matlab 代码实现
+        normalized_signals (np.ndarray): 标准化之后的信号数据, 参看 matlab 代码实现
+        Hv (np.ndarray): 基于 base(linear terms) 的候选项组合, 参看 matlab 代码实现
+        S_No (np.ndarray): sparse matrix, 表示选择候选项的下标或索引, 参看 matlab 代码实现
+        candidate_terms (np.ndarray): 候选项集合
+        Kalman_S_No (np.ndarray): 和 Kalman_H 相匹配的候选项选择下标
         n_term (int): FROLS 的阈值或者需要选择的候选项个数
     """
 

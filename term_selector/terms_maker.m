@@ -22,24 +22,25 @@ toc;
 
 function [] = make_terms(flag, is_normalize, max_lag, scale_type, threshold)
     format long;
+    root = '../data/';
 
     % 读取数据
     switch flag
         case 'linear'
             norder = 1;
-            load(['data/', flag, '_signals5D_noise1.mat']);   % linear signals
+            load([root, flag, '_signals5D_noise1.mat']);   % linear signals
             signals = eval([flag, '_signals']);
         case 'nonlinear'
             norder = 2;
-            load(['data/', flag, '_signals5D_noise1.mat']);   % nonlinear signals
+            load([root, flag, '_signals5D_noise1.mat']);   % nonlinear signals
             signals = eval([flag, '_signals']);
         case 'longlag_linear'
             norder = 1;
-            load(['data/', flag, '_signals5D_noise1.mat']);   % longlag linear signals
+            load([root, flag, '_signals5D_noise1.mat']);   % longlag linear signals
             signals = eval([flag, '_signals']);
         case 'longlag_nonlinear'
             norder = 2;
-            load(['data/', flag, '_signals5D_noise1.mat']);   % longlag nonlinear signals
+            load([root, flag, '_signals5D_noise1.mat']);   % longlag nonlinear signals
             signals = eval([flag, '_signals']);
         otherwise
             disp('Not Define!')
@@ -64,7 +65,7 @@ function [] = make_terms(flag, is_normalize, max_lag, scale_type, threshold)
 
     %% !基于RFOLS 算法的候选项选择器
     [H, Hv] = buildH(normalized_signals, norder, max_lag);
-    [Kalman_H, sparse_H, S, S_No] = term_selector(normalized_signals, norder, max_lag, H, threshold);
+    [Kalman_H, sparse_H, S, S_No, ERRs] = term_selector(normalized_signals, norder, max_lag, H, threshold);
 
     % 保存重要数据
     disp('saving important data ......');
@@ -76,13 +77,13 @@ function [] = make_terms(flag, is_normalize, max_lag, scale_type, threshold)
 
     switch flag
         case 'linear'
-            save(['./data/', name_set{1, 1}], 'normalized_signals', 'H', 'Hv', 'Kalman_H', 'sparse_H', 'S', 'S_No');  % linear signals
+            save([root, name_set{1, 1}], 'normalized_signals', 'H', 'Hv', 'Kalman_H', 'sparse_H', 'S', 'S_No', 'ERRs');  % linear signals
         case 'nonlinear'
-            save(['./data/', name_set{1, 2}], 'normalized_signals', 'H', 'Hv', 'Kalman_H', 'sparse_H', 'S', 'S_No');  % nonlinear signals
+            save([root, name_set{1, 2}], 'normalized_signals', 'H', 'Hv', 'Kalman_H', 'sparse_H', 'S', 'S_No', 'ERRs');  % nonlinear signals
         case 'longlag_linear'
-            save(['./data/', name_set{1, 3}], 'normalized_signals', 'H', 'Hv', 'Kalman_H', 'sparse_H', 'S', 'S_No');  % longlag linear signals
+            save([root, name_set{1, 3}], 'normalized_signals', 'H', 'Hv', 'Kalman_H', 'sparse_H', 'S', 'S_No', 'ERRs');  % longlag linear signals
         case 'longlag_nonlinear'
-            save(['./data/', name_set{1, 4}], 'normalized_signals', 'H', 'Hv', 'Kalman_H', 'sparse_H', 'S', 'S_No');  % longlag nonlinear signals
+            save([root, name_set{1, 4}], 'normalized_signals', 'H', 'Hv', 'Kalman_H', 'sparse_H', 'S', 'S_No', 'ERRs');  % longlag nonlinear signals
         otherwise
             disp('Not Define!')
     end
