@@ -21,15 +21,6 @@ for m=data_type
             norder = 1;
             N = NN - max_lag;
             M = nchoosek(max_lag*n_ch + norder, norder) - 1;
-        case 'longlag_linear'
-            load([root, flag, '_signals5D_noise1.mat']);
-            max_lag = 10;    % 最大时延
-            threshold = 5;  % 候选项个数
-            signals = eval([flag, '_signals']);   % 模型的数据
-            [NN, n_ch] = size(signals);
-            norder = 1;
-            N = NN - max_lag;
-            M = nchoosek(max_lag*n_ch + norder, norder) - 1;
         case 'nonlinear'
             load([root, flag, '_signals5D_noise1.mat']);
             max_lag = 5;    % 最大时延
@@ -37,6 +28,15 @@ for m=data_type
             signals = eval([flag, '_signals']);   % 模型的数据
             [NN, n_ch] = size(signals);
             norder = 2;
+            N = NN - max_lag;
+            M = nchoosek(max_lag*n_ch + norder, norder) - 1;
+        case 'longlag_linear'
+            load([root, flag, '_signals5D_noise1.mat']);
+            max_lag = 10;    % 最大时延
+            threshold = 5;  % 候选项个数
+            signals = eval([flag, '_signals']);   % 模型的数据
+            [NN, n_ch] = size(signals);
+            norder = 1;
             N = NN - max_lag;
             M = nchoosek(max_lag*n_ch + norder, norder) - 1;
         case 'longlag_nonlinear'

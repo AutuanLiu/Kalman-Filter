@@ -28,17 +28,21 @@ function [] = make_terms(flag, is_normalize, max_lag, scale_type, threshold)
     switch flag
         case 'linear'
             norder = 1;
+            max_lag = 5;    % 最大时延
             load([root, flag, '_signals5D_noise1.mat']);   % linear signals
             signals = eval([flag, '_signals']);
         case 'nonlinear'
+            max_lag = 5;    % 最大时延
             norder = 2;
             load([root, flag, '_signals5D_noise1.mat']);   % nonlinear signals
             signals = eval([flag, '_signals']);
         case 'longlag_linear'
+            max_lag = 10;    % 最大时延
             norder = 1;
             load([root, flag, '_signals5D_noise1.mat']);   % longlag linear signals
             signals = eval([flag, '_signals']);
         case 'longlag_nonlinear'
+            max_lag = 10;    % 最大时延
             norder = 2;
             load([root, flag, '_signals5D_noise1.mat']);   % longlag nonlinear signals
             signals = eval([flag, '_signals']);
