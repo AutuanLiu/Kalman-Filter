@@ -151,7 +151,7 @@ def plot_term_ERR(terms, ERRs, fname):
     fig, ax = plt.subplots(n_dim, figsize=(10, 30))
     for sub in range(n_dim):
         ax[sub].bar(terms[sub, :], ERRs[sub, :])
-        ax[sub].set_title(f'x{sub+1}')
+        ax[sub].set_title(f'signal x{sub+1}, ERRs={np.round(ERRs[sub, :], 4).tolist()}')
         ax[sub].set_ylim(0, 1)
         ax[sub].set_xlabel('term_chosen')
         ax[sub].set_ylabel('ERR')
