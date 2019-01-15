@@ -7,6 +7,7 @@ Copyright:
 """
 
 import numpy as np
+
 from kalman_estimation import get_mat_data, get_txt_data
 
 data_types = {'linear', 'nonlinear', 'longlag_linear', 'longlag_nonlinear'}

@@ -8,9 +8,7 @@ Copyright:
 
 import numpy as np
 
-from kalman_estimation import (get_mat_data, get_terms_matrix,
-                               get_txt_data, plot_term_ERR,
-                               update_condidate_terms)
+from kalman_estimation import (get_mat_data, get_terms_matrix, get_txt_data, plot_term_ERR, update_condidate_terms)
 
 
 def update_terms(data_root='data/', data_type_set={'linear', 'nonlinear', 'longlag_linear', 'longlag_nonlinear'}):

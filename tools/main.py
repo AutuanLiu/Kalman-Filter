@@ -6,7 +6,7 @@ Copyright:
     Date: 2019/1/14
 """
 
-from core_tools import update_terms, plot_FROLS_term, plot_Kalman_term
+from core_tools import plot_FROLS_term, plot_Kalman_term, update_terms
 
 # !更新候选项
 update_terms(data_root='data/', data_type_set={'linear', 'nonlinear', 'longlag_linear', 'longlag_nonlinear'})
