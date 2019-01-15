@@ -24,7 +24,7 @@ def update_terms(data_root='data/', data_type_set={'linear', 'nonlinear', 'longl
 
 
 def plot_FROLS_term(data_root='data/', img_root='images/', data_type_set={'linear', 'nonlinear', 'longlag_linear', 'longlag_nonlinear'}):
-    """可视化 FROLS 算法中 选择的候选项和 ERR 之间的关系
+    """可视化 FROLS 算法中 选择的候选项和 ERR 之间的关系, 图片质量(size: 10*30, dpi=300), 3000 x 9000
 
     Args:
         data_root (str): 数据存储根目录, Defaults to 'data/'.
@@ -41,7 +41,7 @@ def plot_FROLS_term(data_root='data/', img_root='images/', data_type_set={'linea
 
 
 def plot_Kalman_term(data_root='data/', img_root='images/', data_type_set={'linear', 'nonlinear', 'longlag_linear', 'longlag_nonlinear'}):
-    """可视化 Kalman 算法中 选择的候选项和 ERR 之间的关系
+    """可视化 Kalman 算法中 选择的候选项和 ERR 之间的关系, 图片质量(size: 10*30, dpi=300), 3000 x 9000
 
     Args:
         data_root (str): 数据存储根目录, Defaults to 'data/'.

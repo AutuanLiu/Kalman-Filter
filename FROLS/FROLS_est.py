@@ -28,7 +28,7 @@ def make_FROLS_func(var_name: str = 'x', step_name: str = 't', save=True, fname=
 
     root = 'data/'
     for d_type in data_types:
-        coef = get_mat_data(f'{root}FROLS_{d_type}_coef.mat', 'coef_est')
+        coef = get_mat_data(f'{root}FROLS_{d_type}_est.mat', 'coef_est')
         terms = get_txt_data(f'{root}{d_type}_candidate_terms.txt', delimiter='\n', dtype=np.str)
         # 候选项的顺序是相同的，因为采用了相同的算法计算候选项
         [n_dim, n_term] = coef.shape
