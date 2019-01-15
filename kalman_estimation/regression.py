@@ -23,7 +23,7 @@ class Linear(Module):
         out_features: size of each output sample
         bias: If set to False, the layer will not learn an additive bias.
             Default: ``True``
-            
+
     Attributes:
         weight: the learnable weights of the module
         bias:   the learnable bias of the module
@@ -60,7 +60,7 @@ class Linear(Module):
 
 def regression4torch(in_dim, out_dim):
     """基于 PyTorch 的线性回归模型 Y = X*W +b
-    
+
     原有的 nn.Linear() 不适用于这里的问题，所以定义 Linear 如上
 
     Args:
@@ -81,7 +81,7 @@ def regression4sklearn():
 
 class TermsData(Dataset):
     """构造关于候选项的数据集
-    
+
     Attributes:
         data (torch.Tensor): 数据
         target (torch.Tensor): 目标值
@@ -89,10 +89,10 @@ class TermsData(Dataset):
 
     def __init__(self, signals, Kalman_H):
         """构造函数
-        
+
         Args:
-            signals (np.array): 原始信号数据
-            Kalman_H (np.array): Kalman 候选项矩阵
+            signals (np.ndarray): 原始信号数据
+            Kalman_H (np.ndarray): Kalman 候选项矩阵
         """
 
         super().__init__()
@@ -114,10 +114,10 @@ class TermsData(Dataset):
 
 def make_dataset4SK(signals, Kalman_H):
     """构造用于 scikit-learn 使用的数据集
-        
+
     Args:
-        signals (np.array): 原始信号数据
-        Kalman_H (np.array): Kalman 候选项矩阵
+        signals (np.ndarray): 原始信号数据
+        Kalman_H (np.ndarray): Kalman 候选项矩阵
     """
 
     n_dim, n_point, _ = Kalman_H.shape

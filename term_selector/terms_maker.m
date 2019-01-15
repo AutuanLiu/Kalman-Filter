@@ -66,6 +66,7 @@ function [] = make_terms(flag, is_normalize, max_lag, scale_type, threshold)
     %% !基于RFOLS 算法的候选项选择器
     [H, Hv] = buildH(normalized_signals, norder, max_lag);
     [Kalman_H, sparse_H, S, S_No, ERRs] = term_selector(normalized_signals, norder, max_lag, H, threshold);
+    terms_chosen = S_No(:, 1:threshold);   % threshold 为候选项的个数
 
     % 保存重要数据
     disp('saving important data ......');
@@ -77,13 +78,13 @@ function [] = make_terms(flag, is_normalize, max_lag, scale_type, threshold)
 
     switch flag
         case 'linear'
-            save([root, name_set{1, 1}], 'normalized_signals', 'H', 'Hv', 'Kalman_H', 'sparse_H', 'S', 'S_No', 'ERRs');  % linear signals
+            save([root, name_set{1, 1}], 'normalized_signals', 'H', 'Hv', 'Kalman_H', 'sparse_H', 'S', 'S_No', 'ERRs', 'terms_chosen');  % linear signals
         case 'nonlinear'
-            save([root, name_set{1, 2}], 'normalized_signals', 'H', 'Hv', 'Kalman_H', 'sparse_H', 'S', 'S_No', 'ERRs');  % nonlinear signals
+            save([root, name_set{1, 2}], 'normalized_signals', 'H', 'Hv', 'Kalman_H', 'sparse_H', 'S', 'S_No', 'ERRs', 'terms_chosen');  % nonlinear signals
         case 'longlag_linear'
-            save([root, name_set{1, 3}], 'normalized_signals', 'H', 'Hv', 'Kalman_H', 'sparse_H', 'S', 'S_No', 'ERRs');  % longlag linear signals
+            save([root, name_set{1, 3}], 'normalized_signals', 'H', 'Hv', 'Kalman_H', 'sparse_H', 'S', 'S_No', 'ERRs', 'terms_chosen');  % longlag linear signals
         case 'longlag_nonlinear'
-            save([root, name_set{1, 4}], 'normalized_signals', 'H', 'Hv', 'Kalman_H', 'sparse_H', 'S', 'S_No', 'ERRs');  % longlag nonlinear signals
+            save([root, name_set{1, 4}], 'normalized_signals', 'H', 'Hv', 'Kalman_H', 'sparse_H', 'S', 'S_No', 'ERRs', 'terms_chosen');  % longlag nonlinear signals
         otherwise
             disp('Not Define!')
     end

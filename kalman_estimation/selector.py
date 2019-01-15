@@ -59,7 +59,7 @@ class Selector:
             step_name (str, optional): Defaults to 't'. 时间点变量名
 
         Returns:
-            terms_repr (np.array) 模型表达式
+            terms_repr (np.ndarray) 模型表达式
         """
 
         terms_repr = []
@@ -96,10 +96,10 @@ class Selector:
             step_name (str, optional): Defaults to 't'. 时间点变量名
 
         Returns:
-            normalized_signals (np.array): 标准化之后的信号数据
-            Kalman_H (np.array): 供 kalman 滤波器使用的候选项矩阵
-            candidate_terms (np.array): 候选项集合
-            Kalman_S_No (np.array): 和 Kalman_H 相匹配的候选项选择下标
+            normalized_signals (np.ndarray): 标准化之后的信号数据
+            Kalman_H (np.ndarray): 供 kalman 滤波器使用的候选项矩阵
+            candidate_terms (np.ndarray): 候选项集合
+            Kalman_S_No (np.ndarray): 和 Kalman_H 相匹配的候选项选择下标
         """
 
         return self.normalized_signals, self.Kalman_H, self.candidate_terms, self.Kalman_S_No

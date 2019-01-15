@@ -32,7 +32,7 @@ class Kalman4ARX(KalmanFilter):
 
     Attributes:
         max_lag (int): max lag of model.
-        signals (np.array): N * ndim. normalized_signals 经过标准化的数据
+        signals (np.ndarray): N * ndim. normalized_signals 经过标准化的数据
         N (int): 信号的长度
         ndim (int): 信号的维数
         uc (float): update coefficient.
@@ -45,7 +45,7 @@ class Kalman4ARX(KalmanFilter):
         """构造函数。
 
         Args:
-            signals (np.array): 可观测信号(n_point*n_dim)
+            signals (np.ndarray): 可观测信号(n_point*n_dim)
             max_lag (int, optional): Defaults to 3. 自回归模型的阶数，即最大延迟
             uc (float, optional): Defaults to 0.0001. update coefficient, forgetting factor.
         """
@@ -74,7 +74,7 @@ class Kalman4ARX(KalmanFilter):
             time: int, 当前的时间点, 从 0 开始
 
         Returns:
-            measurement_matrix: np.array, 与当前时刻对应的转移矩阵
+            measurement_matrix: np.ndarray, 与当前时刻对应的转移矩阵
         """
 
         Yt = lambda t: self.signals[(t - 1)::-1, :] if t == self.max_lag else self.signals[(t - 1):(t - 1 - self.max_lag):-1, :]
@@ -147,10 +147,10 @@ class Kalman4ARX(KalmanFilter):
 
         Args:
             time (int): 当前时间点
-            z (np.array): column vector, 当前观测值
+            z (np.ndarray): column vector, 当前观测值
 
         Returns:
-            z_s (np.array): column vector, 当前的预测值
+            z_s (np.ndarray): column vector, 当前的预测值
         """
 
         self.predict()
@@ -164,9 +164,9 @@ class Kalman4ARX(KalmanFilter):
         """滤波器的前向操作。
 
         Returns:
-            x: (np.array) 经过滤波器后状态的最终估计值
-            P: (np.array) 经过滤波器后最终的预测误差
-            z_s: (np.array) 经过滤波器后观测值的估计值
+            x: (np.ndarray) 经过滤波器后状态的最终估计值
+            P: (np.ndarray) 经过滤波器后最终的预测误差
+            z_s: (np.ndarray) 经过滤波器后观测值的估计值
         """
 
         z_s = []
@@ -180,9 +180,9 @@ class Kalman4ARX(KalmanFilter):
         smoother 方法，避免使用两个滤波器，在进行后向操作还要使用前向操作的最终状态进行初始化的问题。
 
         Returns:
-            x: (np.array) 经过滤波器后状态的最终估计值
-            P: (np.array) 经过滤波器后最终的预测误差
-            z_s: (np.array) 经过滤波器后观测值的估计值
+            x: (np.ndarray) 经过滤波器后状态的最终估计值
+            P: (np.ndarray) 经过滤波器后最终的预测误差
+            z_s: (np.ndarray) 经过滤波器后观测值的估计值
         """
 
         z_s = []
@@ -289,8 +289,8 @@ class Kalman4FROLS(KalmanFilter):
 
     Attributes:
         max_lag (int): max lag of model.
-        signals (np.array): 输入的信号数据 normalized_signals 经过标准化的数据
-        Kalman_H (np.array): 测量矩阵 measurement matrix
+        signals (np.ndarray): 输入的信号数据 normalized_signals 经过标准化的数据
+        Kalman_H (np.ndarray): 测量矩阵 measurement matrix
         N (int): 信号的有效长度
         ndim (int): 信号的维数
         uc (float): update coefficient.
@@ -300,8 +300,8 @@ class Kalman4FROLS(KalmanFilter):
         """构造函数。
 
         Args:
-            signals (np.array): 可观测信号(n_point*n_dim) (N 的大小和 Kalman_H 的行数相同)
-            Kalman_H (np.array): 测量矩阵 measurement matrix
+            signals (np.ndarray): 可观测信号(n_point*n_dim) (N 的大小和 Kalman_H 的行数相同)
+            Kalman_H (np.ndarray): 测量矩阵 measurement matrix
             uc (float, optional): Defaults to 0.0001. update coefficient, forgetting factor.
         """
 
@@ -331,7 +331,7 @@ class Kalman4FROLS(KalmanFilter):
             time: int, 当前的时间点, 从 0 开始
 
         Returns:
-            measurement_matrix: np.array, 与当前时刻对应的转移矩阵
+            measurement_matrix: np.ndarray, 与当前时刻对应的转移矩阵
         """
 
         Cn = np.kron(eye(self.ndim), self.Kalman_H[:, time, :])    #! 这里其实计算的是 n 时刻的 C
@@ -402,10 +402,10 @@ class Kalman4FROLS(KalmanFilter):
 
         Args:
             time (int): 当前时间点
-            z (np.array): column vector, 当前观测值
+            z (np.ndarray): column vector, 当前观测值
 
         Returns:
-            z_s (np.array): column vector, 当前的预测值
+            z_s (np.ndarray): column vector, 当前的预测值
         """
 
         self.predict()
@@ -419,9 +419,9 @@ class Kalman4FROLS(KalmanFilter):
         """滤波器的前向操作。
 
         Returns:
-            x: (np.array) 经过滤波器后状态的最终估计值
-            P: (np.array) 经过滤波器后最终的预测误差
-            z_s: (np.array) 经过滤波器后观测值的估计值
+            x: (np.ndarray) 经过滤波器后状态的最终估计值
+            P: (np.ndarray) 经过滤波器后最终的预测误差
+            z_s: (np.ndarray) 经过滤波器后观测值的估计值
         """
 
         z_s = []
@@ -435,9 +435,9 @@ class Kalman4FROLS(KalmanFilter):
         smoother 方法，避免使用两个滤波器，在进行后向操作还要使用前向操作的最终状态进行初始化的问题。
 
         Returns:
-            x: (np.array) 经过滤波器后状态的最终估计值
-            P: (np.array) 经过滤波器后最终的预测误差
-            z_s: (np.array) 经过滤波器后观测值的估计值
+            x: (np.ndarray) 经过滤波器后状态的最终估计值
+            P: (np.ndarray) 经过滤波器后最终的预测误差
+            z_s: (np.ndarray) 经过滤波器后观测值的估计值
         """
 
         z_s = []
@@ -495,8 +495,8 @@ class torch4FROLS:
         """构造函数
 
         Args:
-            signals (np.array): normalized_signals 经过标准化的数据
-            Kalman_H (np.array): Kalman 候选项矩阵
+            signals (np.ndarray): normalized_signals 经过标准化的数据
+            Kalman_H (np.ndarray): Kalman 候选项矩阵
             n_epoch(int, optional): Defaults to 32. 训练 epoch 数
             batchsize(int, optional): Defaults to 32.
             learning_rate(int, optional): Defaults to 0.001.
@@ -546,8 +546,8 @@ class torch4FROLS:
 #         """构造函数
 
 #         Args:
-#             signals (np.array): normalized_signals 经过标准化的数据
-#             Kalman_H (np.array): Kalman 候选项矩阵
+#             signals (np.ndarray): normalized_signals 经过标准化的数据
+#             Kalman_H (np.ndarray): Kalman 候选项矩阵
 #         """
 
 #         from .regression import regression4sklearn, make_dataset4SK

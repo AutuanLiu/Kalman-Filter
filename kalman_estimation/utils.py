@@ -15,14 +15,14 @@ __all__ = ['get_mat_data', 'get_txt_data', 'normalize', 'save_2Darray', 'save_3D
 
 
 def get_mat_data(file_name, var_name):
-    """从文件中读取出原始数据并转换为 np.array 类型
+    """从文件中读取出原始数据并转换为 np.ndarray 类型
 
     Args:
         file_name (str): 数据存储的完整路径，如 'datastes/abc.mat'
         var_name (str): 存储数据的变量名
 
     Returns:
-        np.array: 将读取到的原始数据转换为 np.ndarray 类型
+        np.ndarray: 将读取到的原始数据转换为 np.ndarray 类型
     """
 
     import scipy.io as sio
@@ -31,7 +31,7 @@ def get_mat_data(file_name, var_name):
 
 
 def get_txt_data(file_name, delimiter=',', dtype=np.float32):
-    """从文件中读取出原始数据并转换为 np.array 类型
+    """从文件中读取出原始数据并转换为 np.ndarray 类型
 
     Args:
         file_name (str): 数据存储的完整路径，如 'datastes/abc.mat'
@@ -63,11 +63,11 @@ def normalize(data, scaler_type: str = 'MinMaxScaler'):
 
 
 def save_2Darray(file_path, data):
-    """save np.array(2D) into txt file.(Ref2)
+    """save np.ndarray(2D) into txt file.(Ref2)
 
     Args:
         file_path (str or instance of Path(windowns or linux)): the file path to save data.
-        data (np.array): the data need be saved.
+        data (np.ndarray): the data need be saved.
     """
 
     with open(file_path, 'w') as outfile:
@@ -76,11 +76,11 @@ def save_2Darray(file_path, data):
 
 
 def save_3Darray(file_path, data):
-    """save np.array(3D) into txt file.(Ref2)
+    """save np.ndarray(3D) into txt file.(Ref2)
 
     Args:
         file_path (str or instance of Path(windowns or linux)): the file path to save data.
-        data (np.array): the data need be saved.
+        data (np.ndarray): the data need be saved.
     """
 
     with open(file_path, 'w') as outfile:
@@ -112,7 +112,7 @@ def make_linear_func(A_coef, var_name: str = 'y', step_name: str = 't', save=Tru
     """根据系数生成模型表达式
 
     Args:
-        A_coef (np.array): y = Ax + e 形式的模型系数矩阵 A
+        A_coef (np.ndarray): y = Ax + e 形式的模型系数矩阵 A
         var_name (str, optional): Defaults to 'y'. 使用的变量名
         step_name (str, optional): Defaults to 't'. 时间点变量名
         save (bool, optional): Defaults to True. 是否保存结果
@@ -120,7 +120,7 @@ def make_linear_func(A_coef, var_name: str = 'y', step_name: str = 't', save=Tru
         kwargs: np.savetxt args
 
     Returns:
-        func_repr (np.array) 模型表达式
+        func_repr (np.ndarray) 模型表达式
     """
 
     max_lag, n_dim, _ = A_coef.shape
@@ -142,16 +142,16 @@ def make_func4K4FROLS(y_coef, terms_set, Kalman_S_No, var_name: str = 'x', step_
     """生成使用 Kalman4FROLS 算法估计系数的模型表达式
 
     Args:
-        y_coef (np.array): 估计的系数
-        terms_set (np.array): 候选项集合
-        Kalman_S_No (np.array): 候选项选择下标
+        y_coef (np.ndarray): 估计的系数
+        terms_set (np.ndarray): 候选项集合
+        Kalman_S_No (np.ndarray): 候选项选择下标
         var_name (str, optional): Defaults to 'x'. 变量名
         step_name (str, optional): Defaults to 't'. 时间点变量名
         save (bool, optional): Defaults to True. 是否保存结果
         fname (str, optional): Defaults to 'est_model.txt'. 保存的文件名
 
     Returns:
-        func_repr (np.array) 模型表达式
+        func_repr (np.ndarray) 模型表达式
     """
 
     n_dim, n_term = y_coef.shape

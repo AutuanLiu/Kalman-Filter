@@ -12,14 +12,14 @@
 % and spatio-temporal domains[M]. Wiley, 2013.
 %
 
-function [coff, yerror, term_idx, ERR] = FROLS(norder, signals, max_lag, N, threshold, y)
+function [coff, yerror, terms_chosen, ERR] = FROLS(norder, signals, max_lag, N, threshold, y)
     % 调用的函数： generateH、frols_fixed
     % generateH 和 frols_fixed 都是该主函数的辅助函数
     % norder: 非线性次数
     % signals: 信号数据 Npoint * ndim(信号个数)
     % max_lag: 最大时延
     % N: 实际使用的数据点的长度
-    % term_idx: 被选择的候选项下标(threshold相关)
+    % terms_chosen: 被选择的候选项下标(threshold相关)
     % threshold: 算法停止的阈值
     % y: 当前的输出信号或者对应信号(输出子系统) NN * 1
     % coff: 对应于候选项的系数, 前 sum(lags) 行为线性项的系数，其余为非线性项系数
@@ -72,7 +72,7 @@ function [coff, yerror, term_idx, ERR] = FROLS(norder, signals, max_lag, N, thre
 
     % 计算误差项 Z=P*\Theat+E, 所以 E=Z-P*\Theta
     yerror((1 + max_lag):(max_lag + N)) = y - H * coff;
-    term_idx = L(1, 1:threshold);  % 注意这里的 threshold 为选择候选项的个数
+    terms_chosen = L(1, 1:threshold);  % 注意这里的 threshold 为选择候选项的个数
     return;
 end
 
