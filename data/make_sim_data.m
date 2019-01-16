@@ -139,7 +139,3 @@ function init = init_signal(max_lag, nchannel)
     init = randn(max_lag, nchannel);
     return;
 end
-1. make_sim_data.m
-2. terms_maker.m
-3. FROLS_estimator.m
-4. 

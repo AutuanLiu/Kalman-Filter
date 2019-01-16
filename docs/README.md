@@ -56,6 +56,7 @@ FROLS.FROLS_est.py | 将 FROLS 算法估计的结果保存成表达式并保存�
 ### FROLS 算法实验
 
 1. FROLS_estimation.m
+2. FROLS_est.py
 
 ### FROLS 算法实验可视化分析
 
@@ -91,3 +92,5 @@ FROLS.FROLS_est.py | 将 FROLS 算法估计的结果保存成表达式并保存�
 
 1. 一定要注意代码的运行顺序
 2. 一定要主要保持各个代码中 max lag 的设置的一致性
+3. 运行 matlab 文件时，请将工作目录添加到路径中，另外运行某个文件时，请切换到可执行文件的路径处
+4. 运行 python 文件时，直接在工作目录处运行即可
