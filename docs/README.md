@@ -66,14 +66,19 @@ FROLS.FROLS_est.py | 将 FROLS 算法估计的结果保存成表达式并保存�
 1. 导入数据
 2. kalman-estimation.Selector.make_selection()
 3. 构造估计器
+
     ```python
     kf = torch4FROLS(normalized_signals, Kalman_H, n_epoch=100)
     ```
+
 4. 估计系数
+
     ```python
     y_coef = kf.estimate_coef()
     ```
+
 5. 生成表达式
+
     ```python
     make_func4K4FROLS
     ```
