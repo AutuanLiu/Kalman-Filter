@@ -1,0 +1,44 @@
+{
+    "linear": {
+        "algorithm": [
+            "Kalman4ARX",
+            "Kalman4FROLS",
+            "torch4FROLS"
+        ],
+        "max_lag": 5,
+        "n_trial": 1,
+        "data_root": "data/",
+        "image_root": "images/"
+    },
+    "nonlinear": {
+        "algorithm": [
+            "Kalman4FROLS",
+            "torch4FROLS"
+        ],
+        "max_lag": 5,
+        "n_trial": 1,
+        "data_root": "data/",
+        "image_root": "images/"
+    },
+    "longlag_linear": {
+        "algorithm": [
+            "Kalman4ARX",
+            "Kalman4FROLS",
+            "torch4FROLS"
+        ],
+        "max_lag": 10,
+        "n_trial": 1,
+        "data_root": "data/",
+        "image_root": "images/"
+    },
+    "longlag_nonlinear": {
+        "algorithm": [
+            "Kalman4FROLS",
+            "torch4FROLS"
+        ],
+        "max_lag": 5,
+        "n_trial": 1,
+        "data_root": "data/",
+        "image_root": "images/"
+    }
+}

@@ -4,6 +4,8 @@
 Email: autuanliu@163.com
 ```
 
+[文档下载](https://workuse.nos-eastchina1.126.net/Docs/Kalman%E6%BB%A4%E6%B3%A2%E4%BC%B0%E8%AE%A1%E7%BA%BF%E6%80%A7ARX%E6%A8%A1%E5%9E%8B%E7%B3%BB%E6%95%B0.pdf)
+
 - [代码逻辑](#%E4%BB%A3%E7%A0%81%E9%80%BB%E8%BE%91)
   - [核心组件](#%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6)
   - [关键步骤](#%E5%85%B3%E9%94%AE%E6%AD%A5%E9%AA%A4)
@@ -14,6 +16,9 @@ Email: autuanliu@163.com
     - [Kalman Filter 算法实验](#kalman-filter-%E7%AE%97%E6%B3%95%E5%AE%9E%E9%AA%8C)
     - [Kalman Filter 算法实验可视化分析](#kalman-filter-%E7%AE%97%E6%B3%95%E5%AE%9E%E9%AA%8C%E5%8F%AF%E8%A7%86%E5%8C%96%E5%88%86%E6%9E%90)
   - [关键点](#%E5%85%B3%E9%94%AE%E7%82%B9)
+  - [结果示例](#%E7%BB%93%E6%9E%9C%E7%A4%BA%E4%BE%8B)
+    - [FROLS](#frols)
+    - [Kalman](#kalman)
 
 ## 核心组件
 
@@ -34,6 +39,9 @@ kalman_estimation.regression | 回归算法、候选项数据集设计
 kalman_estimation.estimator | 基于 Kalman Filter 的系数估计器算法，如 Kalman4ARX, Kalman4FROLS, torch4FROLS
 term_selector.terms_maker.m | 数据标准化、计算候选项
 tools.core_tools | 为实验设计的核心工具
+tools.update_terms_main.py | 更新候选项
+tools.visualization_main.py | 可视化操作
+tools.kalman_main.py | 基于 Kalman 滤波器的算法流程 flow, pipeline
 FROLS.FROLS_estimator.m | 使用 FROLS 算法估计系数并保存结果
 FROLS.FROLS_est.py | 将 FROLS 算法估计的结果保存成表达式并保存结果
 
@@ -51,7 +59,7 @@ FROLS.FROLS_est.py | 将 FROLS 算法估计的结果保存成表达式并保存�
 
 ### 更新候选项集合
 
-1. update_terms
+1. update_terms(update_terms_main.py)
 
 ### FROLS 算法实验
 
@@ -60,7 +68,7 @@ FROLS.FROLS_est.py | 将 FROLS 算法估计的结果保存成表达式并保存�
 
 ### FROLS 算法实验可视化分析
 
-1. plot_Kalman_term
+1. plot_Kalman_term(visualization_main.py)
 
 ### Kalman Filter 算法实验
 
@@ -86,7 +94,7 @@ FROLS.FROLS_est.py | 将 FROLS 算法估计的结果保存成表达式并保存�
 
 ### Kalman Filter 算法实验可视化分析
 
-1. plot_Kalman_term
+1. plot_Kalman_term(visualization_main.py)
 
 ## 关键点
 
@@ -94,3 +102,13 @@ FROLS.FROLS_est.py | 将 FROLS 算法估计的结果保存成表达式并保存�
 2. 一定要主要保持各个代码中 max lag 的设置的一致性
 3. 运行 matlab 文件时，请将工作目录添加到路径中，另外运行某个文件时，请切换到可执行文件的路径处
 4. 运行 python 文件时，直接在工作目录处运行即可
+
+## 结果示例
+
+### FROLS
+
+![](https://workuse.nos-eastchina1.126.net/Github/Images/FROLS_linear.png)
+
+### Kalman
+
+![](https://workuse.nos-eastchina1.126.net/Github/Images/Kalman_linear.png)
