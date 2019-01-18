@@ -55,3 +55,12 @@ def plot_Kalman_term(data_root='data/', img_root='images/', data_type_set={'line
         terms_No = get_mat_data(f'{data_root}{data_type}_terms.mat', 'terms_chosen')
         terms_matrix = get_terms_matrix(terms, terms_No)
         plot_term_ERR(terms_matrix, ERRs, f'{img_root}Kalman_{data_type}.png')
+
+
+def get_json_data(fname):
+    import ujson
+    return ujson.load(open(fname, 'r'))
+
+
+def kalman_pipeline(term_path, config):
+    

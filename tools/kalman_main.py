@@ -7,6 +7,7 @@ Copyright:
 """
 
 from kalman_estimation import get_mat_data
+from core_tools import get_json_data
 
 data_type_set = {'linear', 'nonlinear', 'longlag_linear', 'longlag_nonlinear'}
 
@@ -15,3 +16,6 @@ data_type_set = {'linear', 'nonlinear', 'longlag_linear', 'longlag_nonlinear'}
 # !step 3: 估计系数
 # !step 4: 计算估计的模型表达式并保存
 # !step 5: 结果可视化
+
+f = get_json_data('tools/config.json')
+print(f['linear'])
