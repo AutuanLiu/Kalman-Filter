@@ -59,6 +59,11 @@ def plot_Kalman_term(data_root='data/', img_root='images/', data_type_set={'line
 
 
 def get_json_data(fname):
+    """获取 JSON 数据
+
+    Args:
+        fname (str): 存储 JSON 数据的文件路径和文件名
+    """
     import ujson
     return ujson.load(open(fname, 'r'))
 
