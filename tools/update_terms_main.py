@@ -9,4 +9,4 @@ Copyright:
 from core_tools import update_terms
 
 # !更新候选项
-# update_terms(data_root='data/', data_type_set={'linear', 'nonlinear', 'longlag_linear', 'longlag_nonlinear'})
+update_terms(data_root='data/', data_type_set={'linear', 'nonlinear', 'longlag_linear', 'longlag_nonlinear'})

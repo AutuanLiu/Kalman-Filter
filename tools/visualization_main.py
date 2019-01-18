@@ -12,4 +12,4 @@ from core_tools import plot_FROLS_term, plot_Kalman_term
 plot_FROLS_term(data_root='data/', img_root='images/', data_type_set={'linear', 'nonlinear', 'longlag_linear', 'longlag_nonlinear'})
 
 # !可视化 Kalman 算法中 选择的候选项和 ERR 之间的关系
-# plot_Kalman_term(data_root='data/', img_root='images/', data_type_set={'linear', 'nonlinear', 'longlag_linear', 'longlag_nonlinear'})
+plot_Kalman_term(data_root='data/', img_root='images/', data_type_set={'linear', 'nonlinear', 'longlag_linear', 'longlag_nonlinear'})

@@ -8,7 +8,12 @@
         "max_lag": 5,
         "n_trial": 1,
         "data_root": "data/",
-        "image_root": "images/"
+        "image_root": "images/",
+        "est_fname": "kalman_est_model.txt",
+        "term_path": "_terms.mat",
+        "uc": 0.01,
+        "threshold": 0.1,
+        "n_epoch": 100
     },
     "nonlinear": {
         "algorithm": [
@@ -18,7 +23,12 @@
         "max_lag": 5,
         "n_trial": 1,
         "data_root": "data/",
-        "image_root": "images/"
+        "image_root": "images/",
+        "est_fname": "kalman_est_model.txt",
+        "term_path": "_terms.mat",
+        "uc": 0.01,
+        "threshold": 0.1,
+        "n_epoch": 100
     },
     "longlag_linear": {
         "algorithm": [
@@ -29,7 +39,12 @@
         "max_lag": 10,
         "n_trial": 1,
         "data_root": "data/",
-        "image_root": "images/"
+        "image_root": "images/",
+        "est_fname": "kalman_est_model.txt",
+        "term_path": "_terms.mat",
+        "uc": 0.01,
+        "threshold": 0.1,
+        "n_epoch": 100
     },
     "longlag_nonlinear": {
         "algorithm": [
@@ -39,6 +54,11 @@
         "max_lag": 5,
         "n_trial": 1,
         "data_root": "data/",
-        "image_root": "images/"
+        "image_root": "images/",
+        "est_fname": "kalman_est_model.txt",
+        "term_path": "_terms.mat",
+        "uc": 0.01,
+        "threshold": 0.1,
+        "n_epoch": 100
     }
 }
