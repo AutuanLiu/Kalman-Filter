@@ -8,11 +8,8 @@ Copyright:
 
 import numpy as np
 
-from kalman_estimation import (Kalman4ARX, Kalman4FROLS, Selector,
-                               get_mat_data, get_terms_matrix, get_txt_data,
-                               make_func4K4FROLS, make_linear_func,
-                               plot_term_ERR, save_3Darray, torch4FROLS,
-                               update_condidate_terms)
+from kalman_estimation import (Kalman4ARX, Kalman4FROLS, Selector, get_mat_data, get_terms_matrix, get_txt_data, make_func4K4FROLS, make_linear_func,
+                               plot_term_ERR, save_3Darray, torch4FROLS, update_condidate_terms)
 
 
 def update_terms(data_root='data/', data_type_set={'linear', 'nonlinear', 'longlag_linear', 'longlag_nonlinear'}):
@@ -72,12 +69,11 @@ def get_json_data(fname):
     return ujson.load(open(fname, 'r'))
 
 
-def kalman_pipeline(configs, n_trial=1):
+def kalman_pipeline(configs):
     """基于 Kalman 滤波器的各个算法的 pipeline
 
     Args:
         configs (dict): 配置字典
-        n_trial (int): 试验次数
     """
 
     for data_type in configs.keys():
@@ -88,38 +84,111 @@ def kalman_pipeline(configs, n_trial=1):
         normalized_signals, Kalman_H, candidate_terms, Kalman_S_No = term_selector.make_selection()
         # 构造 Kalman Filter
         for algo_type in config['algorithm']:
-            y_coef100 = np.zeros((n_trial+2, 5, 5))
-            for trial in range(n_trial):
-                print(f"{data_type} {algo_type} ### {trial+1}")
-                fname = f"{config['data_root']}{data_type}_{algo_type}_{config['est_fname']}"
-                if algo_type == 'Kalman4ARX':
-                    y_coef100 = np.zeros((n_trial + 2, 5, 25))
-                    kf = Kalman4ARX(normalized_signals, config['max_lag'], uc=config['uc'])
-                    # 估计系数
-                    y_coef, A_coef = kf.estimate_coef(config['threshold'])
-                    # 计算模型表达式并保存
-                    est_model = make_linear_func(A_coef, fname=fname)
-                    # 保存平均结果
-                    y_coef100[trial] = y_coef
-                elif algo_type == 'Kalman4FROLS':
-                    kf = Kalman4FROLS(normalized_signals, Kalman_H=Kalman_H, uc=config['uc'])
-                    y_coef = kf.estimate_coef()
-                    est_model = make_func4K4FROLS(y_coef, candidate_terms, Kalman_S_No, fname=fname)
-                    # 保存平均结果
-                    y_coef100[trial] = y_coef
-                elif algo_type == 'torch4FROLS':
-                    kf = torch4FROLS(normalized_signals, Kalman_H=Kalman_H, n_epoch=config['n_epoch'])
-                    y_coef = kf.estimate_coef()
-                    est_model = make_func4K4FROLS(y_coef, candidate_terms, Kalman_S_No, fname=fname)
-                    # 保存平均结果
-                    y_coef100[trial] = y_coef
-                else:
-                    print('!Not Defined!')
-                y_coef100[trial+1] = np.mean(y_coef, 0)
-                y_coef100[trial+2] = np.std(y_coef, 0)
-                print(f"\n{data_type}_{algo_type} est model saved!\n")
-                fname = f"{config['data_root']}{data_type}_{algo_type}_coef100.txt"
-                save_3Darray(fname, y_coef100)
+            print(f"{data_type} {algo_type}")
+            fname = f"{config['data_root']}{data_type}_{algo_type}_{config['est_fname']}"
+            if algo_type == 'Kalman4ARX':
+                kf = Kalman4ARX(normalized_signals, config['max_lag'], uc=config['uc'])
+                # 估计系数
+                y_coef, A_coef = kf.estimate_coef(config['threshold'])
+                # 计算模型表达式并保存
+                est_model = make_linear_func(A_coef, fname=fname)
+                # 保存平均结果
+            elif algo_type == 'Kalman4FROLS':
+                kf = Kalman4FROLS(normalized_signals, Kalman_H=Kalman_H, uc=config['uc'])
+                y_coef = kf.estimate_coef()
+                est_model = make_func4K4FROLS(y_coef, candidate_terms, Kalman_S_No, fname=fname)
+                # 保存平均结果
+            elif algo_type == 'torch4FROLS':
+                kf = torch4FROLS(normalized_signals, Kalman_H=Kalman_H, n_epoch=config['n_epoch'])
+                y_coef = kf.estimate_coef()
+                est_model = make_func4K4FROLS(y_coef, candidate_terms, Kalman_S_No, fname=fname)
+                # 保存平均结果
+            else:
+                print('!Not Defined!')
+            print(f"\n{data_type}_{algo_type} est model saved!\n")
 
             # 输出结果
             print(est_model)
+
+
+def kalman4ARX_pipeline(data_type, configs, n_trial):
+    """基于 Kalman 滤波器的各个算法的 pipeline
+
+    types = ['linear', 'longlag_linear']
+
+    Args:
+        data_type: 数据类型
+        configs (dict): 配置字典
+        n_trial: 试验次数
+    """
+
+    config = configs[data_type]
+    term_selector = Selector(f"{config['data_root']}{data_type}{config['term_path']}")
+    terms_set = term_selector.make_terms()
+    # get data
+    normalized_signals = term_selector.make_selection()[0]
+    fname = f"{config['data_root']}{data_type}_kalman4ARX100_{config['est_fname']}"
+    A_coef0 = []
+    for trial in range(n_trial):
+        print(f'data_type: {data_type} trial: ### {trial+1}')
+        # 构造 Kalman Filter
+        kf = Kalman4ARX(normalized_signals, config['max_lag'], uc=config['uc'])
+        # 估计系数
+        y_coef, A_coef = kf.estimate_coef(config['threshold'])
+        A_coef0 += A_coef
+    # 计算模型表达式并保存
+    est_model = make_linear_func(A_coef0 / n_trial, fname=fname)
+    # 输出结果
+    print(est_model)
+
+
+def kalman4FROLS_pipeline(data_type, configs, n_trial):
+    """基于 Kalman 滤波器的各个算法的 pipeline
+
+    Args:
+        data_type: 数据类型
+        configs (dict): 配置字典
+        n_trial: 试验次数
+    """
+
+    config = configs[data_type]
+    fname = f"{config['data_root']}{data_type}_kalman4FROLS100_{config['est_fname']}"
+    term_selector = Selector(f"{config['data_root']}{data_type}{config['term_path']}")
+    terms_set = term_selector.make_terms()
+    # get data
+    normalized_signals, Kalman_H, candidate_terms, Kalman_S_No = term_selector.make_selection()
+    y_coef = 0
+    for trial in range(n_trial):
+        print(f'data_type: {data_type} trial: ### {trial+1}')
+        # 构造 Kalman Filter
+        kf = Kalman4FROLS(normalized_signals, Kalman_H=Kalman_H, uc=config['uc'])
+        y_coef += kf.estimate_coef()
+    est_model = make_func4K4FROLS(y_coef / n_trial, candidate_terms, Kalman_S_No, fname=fname)
+
+    # 输出结果
+    print(est_model)
+
+
+def torch4FROLS_pipeline(data_type, configs, n_trial):
+    """基于 Kalman 滤波器的各个算法的 pipeline
+
+    Args:
+        data_type: 数据类型
+        configs (dict): 配置字典
+        n_trial: 试验次数
+    """
+
+    config = configs[data_type]
+    fname = f"{config['data_root']}{data_type}_torch4FROLS100_{config['est_fname']}"
+    term_selector = Selector(f"{config['data_root']}{data_type}{config['term_path']}")
+    terms_set = term_selector.make_terms()
+    # get data
+    normalized_signals, Kalman_H, candidate_terms, Kalman_S_No = term_selector.make_selection()
+    y_coef = 0
+    for trial in range(n_trial):
+        print(f'data_type: {data_type} trial: ### {trial+1}')
+        kf = torch4FROLS(normalized_signals, Kalman_H=Kalman_H, n_epoch=config['n_epoch'])
+        y_coef += kf.estimate_coef()
+    est_model = make_func4K4FROLS(y_coef / n_trial, candidate_terms, Kalman_S_No, fname=fname)
+    # 输出结果
+    print(est_model)

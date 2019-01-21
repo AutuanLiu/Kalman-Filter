@@ -11,7 +11,7 @@
         "image_root": "images/",
         "est_fname": "kalman_est_model.txt",
         "term_path": "_terms.mat",
-        "uc": 0.01,
+        "uc": 0.0001,
         "threshold": 0.1,
         "n_epoch": 100
     },
