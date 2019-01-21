@@ -3,13 +3,7 @@
 % 2019/1/13
 %
 
-tic;
-clear;
-
-data_type = {'linear', 'nonlinear', 'longlag_linear', 'longlag_nonlinear'};
-root = '../data/';
-for m=data_type
-    flag = m{1, 1};
+function [coef_est, terms_chosen, ERRs] = FROLS_estimator(root, flag)
     disp([flag, ' signals calculated!'])
     switch flag
         case 'linear'
@@ -65,4 +59,3 @@ for m=data_type
     f_name = [root, 'FROLS_', flag, '_est.mat'];
     save(f_name, 'coef_est', 'terms_chosen', 'ERRs');
 end
-toc;
