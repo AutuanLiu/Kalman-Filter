@@ -128,9 +128,9 @@ def kalman4ARX_pipeline(data_type, configs, n_trial):
     # get data
     normalized_signals = term_selector.make_selection()[0]
     fname = f"{config['data_root']}{data_type}_kalman4ARX100_{config['est_fname']}"
-    A_coef0 = []
+    A_coef0 = 0
     for trial in range(n_trial):
-        print(f'data_type: {data_type} trial: ### {trial+1}')
+        print(f'data_type: {data_type}, trial: ### {trial+1}')
         # 构造 Kalman Filter
         kf = Kalman4ARX(normalized_signals, config['max_lag'], uc=config['uc'])
         # 估计系数
@@ -159,7 +159,7 @@ def kalman4FROLS_pipeline(data_type, configs, n_trial):
     normalized_signals, Kalman_H, candidate_terms, Kalman_S_No = term_selector.make_selection()
     y_coef = 0
     for trial in range(n_trial):
-        print(f'data_type: {data_type} trial: ### {trial+1}')
+        print(f'data_type: {data_type}, trial: ### {trial+1}')
         # 构造 Kalman Filter
         kf = Kalman4FROLS(normalized_signals, Kalman_H=Kalman_H, uc=config['uc'])
         y_coef += kf.estimate_coef()
@@ -186,7 +186,7 @@ def torch4FROLS_pipeline(data_type, configs, n_trial):
     normalized_signals, Kalman_H, candidate_terms, Kalman_S_No = term_selector.make_selection()
     y_coef = 0
     for trial in range(n_trial):
-        print(f'data_type: {data_type} trial: ### {trial+1}')
+        print(f'data_type: {data_type}, trial: ### {trial+1}')
         kf = torch4FROLS(normalized_signals, Kalman_H=Kalman_H, n_epoch=config['n_epoch'])
         y_coef += kf.estimate_coef()
     est_model = make_func4K4FROLS(y_coef / n_trial, candidate_terms, Kalman_S_No, fname=fname)
