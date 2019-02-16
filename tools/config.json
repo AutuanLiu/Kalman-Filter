@@ -6,7 +6,7 @@
             "torch4FROLS"
         ],
         "max_lag": 5,
-        "n_trial": 1,
+        "n_trial": 100,
         "data_root": "data/",
         "image_root": "images/",
         "est_fname": "kalman_est_model.txt",
@@ -21,7 +21,7 @@
             "torch4FROLS"
         ],
         "max_lag": 5,
-        "n_trial": 1,
+        "n_trial": 100,
         "data_root": "data/",
         "image_root": "images/",
         "est_fname": "kalman_est_model.txt",
@@ -37,7 +37,7 @@
             "torch4FROLS"
         ],
         "max_lag": 10,
-        "n_trial": 1,
+        "n_trial": 100,
         "data_root": "data/",
         "image_root": "images/",
         "est_fname": "kalman_est_model.txt",
@@ -52,7 +52,7 @@
             "torch4FROLS"
         ],
         "max_lag": 5,
-        "n_trial": 1,
+        "n_trial": 100,
         "data_root": "data/",
         "image_root": "images/",
         "est_fname": "kalman_est_model.txt",

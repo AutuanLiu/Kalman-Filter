@@ -24,17 +24,16 @@ configs = get_json_data('tools/config.json')
 # kalman_pipeline(configs)
 
 # 多次实验 kalman4ARX
-n_trial = 100
 A_coef = 0
 for data_type in ['linear', 'longlag_linear']:
-    kalman4ARX_pipeline(data_type, configs, n_trial)
+    kalman4ARX_pipeline(data_type, configs, configs[data_type]['n_trial'])
 
 # 多次实验 kalman4FROLS_pipeline
 for data_type in configs.keys():
-    kalman4FROLS_pipeline(data_type, configs, n_trial)
+    kalman4FROLS_pipeline(data_type, configs, configs[data_type]['n_trial'])
 
 # 多次实验 kalman4FROLS_pipeline
 for data_type in configs.keys():
-    torch4FROLS_pipeline(data_type, configs, n_trial)
+    torch4FROLS_pipeline(data_type, configs, configs[data_type]['n_trial'])
 
 timer.stop()
