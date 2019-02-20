@@ -3,41 +3,61 @@
 % 2019/1/13
 %
 
-function [coef_est, terms_chosen, ERRs] = FROLS_estimator(root, flag)
+function [coef_est, terms_chosen, ERRs] = FROLS_estimator(root, flag, postfix, trial)
     disp([flag, ' signals calculated!'])
     switch flag
         case 'linear'
-            load([root, flag, '_signals5D_noise1.mat']);
+            load([root, flag, postfix]);
             max_lag = 5;    % 最大时延
             threshold = 5;  % 候选项个数
-            signals = eval([flag, '_signals']);   % 模型的数据
+            if trial == 0
+                signals = eval([flag, '_signals']);   % 模型的数据
+            else
+                signals = eval([flag, '_signals100']);   % 模型的数据
+                signals = squeeze(signals(trial, :, :));
+            end
             [NN, n_ch] = size(signals);
             norder = 1;
             N = NN - max_lag;
             M = nchoosek(max_lag*n_ch + norder, norder) - 1;
         case 'nonlinear'
-            load([root, flag, '_signals5D_noise1.mat']);
+            load([root, flag, postfix]);
             max_lag = 5;    % 最大时延
             threshold = 5;  % 候选项个数
-            signals = eval([flag, '_signals']);   % 模型的数据
+            if trial == 0
+                signals = eval([flag, '_signals']);   % 模型的数据
+            else
+                signals = eval([flag, '_signals100']);   % 模型的数据
+                signals = squeeze(signals(trial, :, :));
+            end
             [NN, n_ch] = size(signals);
             norder = 2;
             N = NN - max_lag;
             M = nchoosek(max_lag*n_ch + norder, norder) - 1;
         case 'longlag_linear'
-            load([root, flag, '_signals5D_noise1.mat']);
+            load([root, flag, postfix]);
             max_lag = 10;    % 最大时延
             threshold = 5;  % 候选项个数
-            signals = eval([flag, '_signals']);   % 模型的数据
+            if trial == 0
+                signals = eval([flag, '_signals']);   % 模型的数据
+            else
+                signals = eval([flag, '_signals100']);   % 模型的数据
+                signals = squeeze(signals(trial, :, :));
+            end
             [NN, n_ch] = size(signals);
             norder = 1;
             N = NN - max_lag;
             M = nchoosek(max_lag*n_ch + norder, norder) - 1;
         case 'longlag_nonlinear'
-            load([root, flag, '_signals5D_noise1.mat']);
+            load([root, flag, postfix]);
             max_lag = 10;    % 最大时延
             threshold = 5;  % 候选项个数
-            signals = eval([flag, '_signals']);   % 模型的数据
+            if trial == 0
+                signals = eval([flag, '_signals']);   % 模型的数据
+            else
+                signals = eval([flag, '_signals100']);   % 模型的数据
+                signals = squeeze(signals(trial, :, :));
+            end
             [NN, n_ch] = size(signals);
             norder = 2;
             N = NN - max_lag;
