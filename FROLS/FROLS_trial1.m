@@ -28,8 +28,8 @@ for m=data_type
     end
 
     % 求均值方差
-    mean_coef = mean(coef_est100, 1);
-    var_coef = var(coef_est100, 1);
+    mean_coef = squeeze(mean(coef_est100, 1));
+    var_coef = squeeze(var(coef_est100, 1));
 
     % 保存估计系数
     f_name = [data_root, 'FROLS_', flag, '_est100.mat'];

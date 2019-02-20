@@ -105,4 +105,5 @@ venv.bak/
 .vscode/
 iEEG/
 data/*.mat
+data/*.txt
 checkpoints/

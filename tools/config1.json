@@ -1,0 +1,64 @@
+{
+    "linear": {
+        "algorithm": [
+            "Kalman4ARX",
+            "Kalman4FROLS",
+            "torch4FROLS"
+        ],
+        "max_lag": 5,
+        "n_trial": 100,
+        "data_root": "data/",
+        "image_root": "images/",
+        "est_fname": "kalman_est_model",
+        "term_path": "_terms",
+        "uc": 0.0001,
+        "threshold": 0.1,
+        "n_epoch": 100
+    },
+    "nonlinear": {
+        "algorithm": [
+            "Kalman4FROLS",
+            "torch4FROLS"
+        ],
+        "max_lag": 5,
+        "n_trial": 100,
+        "data_root": "data/",
+        "image_root": "images/",
+        "est_fname": "kalman_est_model",
+        "term_path": "_terms",
+        "uc": 0.0001,
+        "threshold": 0.1,
+        "n_epoch": 100
+    },
+    "longlag_linear": {
+        "algorithm": [
+            "Kalman4ARX",
+            "Kalman4FROLS",
+            "torch4FROLS"
+        ],
+        "max_lag": 10,
+        "n_trial": 100,
+        "data_root": "data/",
+        "image_root": "images/",
+        "est_fname": "kalman_est_model",
+        "term_path": "_terms",
+        "uc": 0.0001,
+        "threshold": 0.1,
+        "n_epoch": 100
+    },
+    "longlag_nonlinear": {
+        "algorithm": [
+            "Kalman4FROLS",
+            "torch4FROLS"
+        ],
+        "max_lag": 5,
+        "n_trial": 100,
+        "data_root": "data/",
+        "image_root": "images/",
+        "est_fname": "kalman_est_model",
+        "term_path": "_terms",
+        "uc": 0.0001,
+        "threshold": 0.1,
+        "n_epoch": 100
+    }
+}

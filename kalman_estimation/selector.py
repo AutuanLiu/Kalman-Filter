@@ -29,7 +29,6 @@ class Selector:
         Kalman_H (np.ndarray): 供 kalman 滤波器使用的候选项矩阵, 参看 matlab 代码实现
         normalized_signals (np.ndarray): 标准化之后的信号数据, 参看 matlab 代码实现
         Hv (np.ndarray): 基于 base(linear terms) 的候选项组合, 参看 matlab 代码实现
-        S_No (np.ndarray): sparse matrix, 表示选择候选项的下标或索引, 参看 matlab 代码实现
         candidate_terms (np.ndarray): 候选项集合
         Kalman_S_No (np.ndarray): 和 Kalman_H 相匹配的候选项选择下标
         n_term (int): FROLS 的阈值或者需要选择的候选项个数
@@ -42,14 +41,14 @@ class Selector:
             terms_path (str): term selector(matlab) 程序的结果路径
         """
 
-        for key in ['normalized_signals', 'Hv', 'Kalman_H', 'S_No']:
+        for key in ['normalized_signals', 'Hv', 'Kalman_H', 'terms_chosen']:
             setattr(self, key, get_mat_data(terms_path, key))
         self.n_dim, n_point, self.n_term = self.Kalman_H.shape
         self.norder = self.Hv.shape[0]
         self.max_lag = self.normalized_signals.shape[0] - n_point
         self.candidate_terms = None
         # !这里注意消除 matlab 和 python 之间的索引差异
-        self.Kalman_S_No = self.S_No[:, :self.n_term] - 1
+        self.Kalman_S_No = self.terms_chosen - 1
 
     def make_terms(self, var_name: str = 'x', step_name: str = 't'):
         """生成模型候选项表达式

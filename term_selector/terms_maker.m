@@ -15,7 +15,7 @@ for t=[true, false]
     for m={'linear', 'nonlinear', 'longlag_linear', 'longlag_nonlinear'}
         is_normalize = t;           % ! 是否标准化数据
         flag = m{1, 1};             % !set{'linear', 'nonlinear', 'longlag_linear', 'longlag_nonlinear'}
-        make_terms(flag, is_normalize, max_lag, scale_type, threshold)
+        make_terms(flag, is_normalize, max_lag, scale_type, threshold);
     end
 end
 toc;
@@ -82,13 +82,13 @@ function [] = make_terms(flag, is_normalize, max_lag, scale_type, threshold)
 
     switch flag
         case 'linear'
-            save([root, name_set{1, 1}], 'normalized_signals', 'H', 'Hv', 'Kalman_H', 'sparse_H', 'S', 'S_No', 'ERRs', 'terms_chosen');  % linear signals
+            save([root, name_set{1, 1}], 'normalized_signals', 'H', 'Hv', 'Kalman_H', 'sparse_H', 'S', 'ERRs', 'terms_chosen');  % linear signals
         case 'nonlinear'
-            save([root, name_set{1, 2}], 'normalized_signals', 'H', 'Hv', 'Kalman_H', 'sparse_H', 'S', 'S_No', 'ERRs', 'terms_chosen');  % nonlinear signals
+            save([root, name_set{1, 2}], 'normalized_signals', 'H', 'Hv', 'Kalman_H', 'sparse_H', 'S', 'ERRs', 'terms_chosen');  % nonlinear signals
         case 'longlag_linear'
-            save([root, name_set{1, 3}], 'normalized_signals', 'H', 'Hv', 'Kalman_H', 'sparse_H', 'S', 'S_No', 'ERRs', 'terms_chosen');  % longlag linear signals
+            save([root, name_set{1, 3}], 'normalized_signals', 'H', 'Hv', 'Kalman_H', 'sparse_H', 'S', 'ERRs', 'terms_chosen');  % longlag linear signals
         case 'longlag_nonlinear'
-            save([root, name_set{1, 4}], 'normalized_signals', 'H', 'Hv', 'Kalman_H', 'sparse_H', 'S', 'S_No', 'ERRs', 'terms_chosen');  % longlag nonlinear signals
+            save([root, name_set{1, 4}], 'normalized_signals', 'H', 'Hv', 'Kalman_H', 'sparse_H', 'S', 'ERRs', 'terms_chosen');  % longlag nonlinear signals
         otherwise
             disp('Not Define!')
     end
