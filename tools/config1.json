@@ -13,7 +13,7 @@
         "term_path": "_terms",
         "uc": 0.0001,
         "threshold": 0.1,
-        "n_epoch": 100
+        "n_epoch": 500
     },
     "nonlinear": {
         "algorithm": [
@@ -28,7 +28,7 @@
         "term_path": "_terms",
         "uc": 0.0001,
         "threshold": 0.1,
-        "n_epoch": 100
+        "n_epoch": 500
     },
     "longlag_linear": {
         "algorithm": [
@@ -44,7 +44,7 @@
         "term_path": "_terms",
         "uc": 0.0001,
         "threshold": 0.1,
-        "n_epoch": 100
+        "n_epoch": 500
     },
     "longlag_nonlinear": {
         "algorithm": [
@@ -59,6 +59,6 @@
         "term_path": "_terms",
         "uc": 0.0001,
         "threshold": 0.1,
-        "n_epoch": 100
+        "n_epoch": 500
     }
 }

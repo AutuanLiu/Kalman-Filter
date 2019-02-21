@@ -530,7 +530,7 @@ class torch4FROLS:
                 loss = self.criterion(output, target)
                 loss.backward()
                 self.optimizer.step()
-            print(f'loss: {loss}')
+            # print(f'loss: {loss}')
 
         for _ in range(self.n_epoch):
             _train()

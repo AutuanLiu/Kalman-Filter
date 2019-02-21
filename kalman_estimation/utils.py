@@ -72,7 +72,7 @@ def save_2Darray(file_path, data):
 
     with open(file_path, 'w') as outfile:
         outfile.write(f'# Array shape: {data.shape}\n')
-        np.savetxt(outfile, data, fmt='%.4f')
+        np.savetxt(outfile, data, fmt='%.6f')
 
 
 def save_3Darray(file_path, data):
@@ -91,7 +91,7 @@ def save_3Darray(file_path, data):
         # Iterating through a ndimensional array produces slices along
         # the last axis. This is equivalent to data[i,:,:] in this case
         for data_slice in data:
-            np.savetxt(outfile, data_slice, fmt='%.4f')
+            np.savetxt(outfile, data_slice, fmt='%.6f')
             # Writing out a break to indicate different slices...
             outfile.write('# New slice\n')
 

@@ -101,6 +101,7 @@ venv.bak/
 /site
 
 # mypy
+.idea/
 .mypy_cache/
 .vscode/
 iEEG/
