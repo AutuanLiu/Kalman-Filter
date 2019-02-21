@@ -15,4 +15,4 @@ __all__ = [
     'make_dataset4SK', 'Linear', 'get_txt_data', 'update_condidate_terms', 'get_terms_matrix', 'plot_term_ERR'
 ]
 
-__version__ = '0.5.4'
+__version__ = '0.6.0'

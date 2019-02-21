@@ -13,7 +13,7 @@ import sys
 
 from setuptools import find_packages, setup
 
-version = '0.5.4'
+version = '0.6.0'
 
 if sys.argv[1] == 'release':
     if not distutils.spawn.find_executable('twine'):

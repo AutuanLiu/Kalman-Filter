@@ -4,6 +4,8 @@
 Email: autuanliu@163.com
 ```
 
+**本库的所有文件，作者保留一切版权，在未经作者许可，请不要擅自使用或者发表**
+
 [![Build Status](https://dev.azure.com/AutuanLiu/Kalman%20Filter/_apis/build/status/AutuanLiu.Kalman-Filter?branchName=master&jobName=Test&configuration=Python36)](https://dev.azure.com/AutuanLiu/Kalman%20Filter/_build/latest?definitionId=1?branchName=master)
 ![](https://img.shields.io/pypi/dm/kalman-estimation.svg)
 ![](https://img.shields.io/github/repo-size/badges/shields.svg)
