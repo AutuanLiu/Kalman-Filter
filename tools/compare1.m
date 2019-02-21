@@ -21,7 +21,7 @@ ylabel('coef mean');
 title('coef estimation comparison');
 legend('real coef', 'FROLS', 'bi-Kalman', 'FROLS-bi-Kalman', 'FROLS-SGD');
 set(gcf,'PaperUnits','inches','PaperPosition',[0 0 12 7])
-saveas(gcf, '../images/coef_com.png');
+saveas(gcf, '../images/coef_com_mean.png');
 
 % 估计系数的误差比较
 figure(2);
