@@ -125,7 +125,7 @@ class Selector1:
         """基于 FROLS 算法的候选项选择器算法
 
         Args:
-            terms_path (str): term selector(matlab) 程序的结果路径
+            terms (str): term selector(matlab) 程序的结果
         """
 
         for key in ['normalized_signals', 'Hv', 'Kalman_H', 'terms_chosen']:
