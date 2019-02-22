@@ -31,8 +31,8 @@ id_correct = {
 }
 
 # 多次实验 kalman4ARX
-for data_type in ['linear', 'longlag_linear']:
-    kalman4ARX_pipeline(data_type, configs, configs[data_type]['n_trial'])
+# for data_type in ['linear', 'longlag_linear']:
+#     kalman4ARX_pipeline(data_type, configs, configs[data_type]['n_trial'])
 
 # 多次实验 kalman4FROLS_pipeline  3分钟左右
 for data_type in configs.keys():

@@ -1,30 +1,38 @@
 % autuanliu@163.com
 % 2018年12月10日
 % 生成 H 矩阵, 候选项矩阵
-% 
+%
 
-function [H, Hv] = buildH(signals, norder, max_lag)
+function [H, Hv] = buildH(signals, norder, max_lag, id_except)
     % signals: 信号数据 Npoint * ndim(信号个数)
     % norder: 非线性次数
     % max_lag: max lag
-    % 
+    % id_except: 排除在外的信号编号,==0表示计算所有信号
+    %
     % returns:
     % H: 候选项矩阵
     % Hv: 候选项组合
-    % 
+    %
 
     %* 候选向量不考虑误差项的系数，我们认为误差是一个常数
     % 候选向量的个数，-1是减去常数项(也可以看成是误差项的一部分)
     [NN, ndim] = size(signals); % signals 信息
-    M = nchoosek(ndim*max_lag + norder, norder) - 1;
+    if id_except == 0
+        lags_sum = ndim * max_lag;  % 所有信号的延迟之和
+        range = 1:ndim;
+    else
+        lags_sum = (ndim - 1) * max_lag;  % 所有信号的延迟之和
+        range = setdiff(1:ndim, id_except);
+    end
+
+    M = nchoosek(lags_sum + norder, norder) - 1;
     N = NN - max_lag;           % 实际使用的数据点的长度
     H = zeros(N, M);            % 模型候选项的数据
     col_H = 1;                  % 当前 H 矩阵的数据列
     Hv = cell(norder, 1);       % 交叉项在 base 上的索引
-    lags_sum = ndim * max_lag;  % 所有信号的延迟之和
 
     %%! H 矩阵线性部分(base)
-    for variable=1:ndim
+    for variable=range
         for lag = 1:max_lag
             H(:, col_H) = signals((max_lag-lag+1):(max_lag-lag+N), variable);
             col_H = col_H + 1;

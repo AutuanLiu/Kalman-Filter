@@ -78,8 +78,7 @@ print(est_model)
 timer.stop()
 
 # !线性模型 Kalmal4FROLS 算法(matlab 标准化)
-# terms_path = './data/nor_linear_terms.mat'
-terms_path = './data/nor_longlag_linear_terms.mat'
+terms_path = './data/linear_terms.mat'
 term = Selector(terms_path)
 terms_repr = term.make_terms()
 
@@ -104,7 +103,7 @@ print(est_model)
 
 # !线性模型 torch4FROLS 算法(matlab 标准化)
 # terms_path = './data/nor_linear_terms.mat'
-terms_path = './data/nor_longlag_linear_terms.mat'
+terms_path = './data/longlag_linear_terms.mat'
 term = Selector(terms_path)
 terms_repr = term.make_terms()
 

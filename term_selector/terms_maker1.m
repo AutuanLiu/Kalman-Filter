@@ -12,6 +12,7 @@ clear;
 scale_type = 'none';     % !set{'mapminmax', 'zscore'} 避免归一化
 max_lag = 10;   % 不影响结果
 threshold = 5;
+ndim = 5;  % 信号的通道数
 n_trial = 100;
 root = '../data/';
 
@@ -19,10 +20,33 @@ for m={'linear', 'nonlinear', 'longlag_linear', 'longlag_nonlinear'}
     flag = m{1, 1};             % !set{'linear', 'nonlinear', 'longlag_linear', 'longlag_nonlinear'}
     for trial = 1:n_trial
         disp([flag, ' trial ### ', int2str(trial)]);
-        [normalized_signals, Hv, Kalman_H, S_No, ERRs, terms_chosen] = make_terms(flag, max_lag, scale_type, threshold, '_signals5D_noise100.mat', trial);
-        % 保存重要数据
-        disp('saving important data ......');
-        name_set = {['linear_terms', int2str(trial), '.mat'], ['nonlinear_terms', int2str(trial), '.mat'], ['longlag_linear_terms', int2str(trial), '.mat'], ['longlag_nonlinear_terms', int2str(trial), '.mat']};
+        % is_wgci 是否计算和 WGCI 相关的数据
+        for is_wgci = [0, 1]
+            switch is_wgci
+                case 0
+                    [normalized_signals, Hv, Kalman_H, S_No, ERRs, terms_chosen] = make_terms(flag, max_lag, scale_type, threshold, '_signals5D_noise100.mat', trial, 0);
+                    % 保存重要数据
+                    disp('saving important data without WGCI ......');
+                    name_set = {['linear_terms', int2str(trial), '.mat'], ['nonlinear_terms', int2str(trial), '.mat'], ['longlag_linear_terms', int2str(trial), '.mat'], ['longlag_nonlinear_terms', int2str(trial), '.mat']};
+                case 1
+                    Kalman_H = cell(ndim, ndim);
+                    ERRs = cell(ndim, ndim);
+                    terms_chosen = cell(ndim, ndim);
+                    for ch = 1:ndim
+                        for id = 1:ndim
+                            [normalized_signals, Hv, Kalman_H1, S_No, ERRs1, terms_chosen1] = make_terms(flag, max_lag, scale_type, threshold, '_signals5D_noise100.mat', trial, id);
+                            Kalman_H{ch, id} = Kalman_H1;
+                            ERRs{ch, id} = ERRs1;
+                            terms_chosen{ch, id} = terms_chosen1;
+                        end
+                    end
+                    % 保存重要数据
+                    disp('saving important data with WGCI ......');
+                    name_set = {['linear_terms_WGCI', int2str(trial), '.mat'], ['nonlinear_terms_WGCI', int2str(trial), '.mat'], ['longlag_linear_terms_WGCI', int2str(trial), '.mat'], ['longlag_nonlinear_terms_WGCI', int2str(trial), '.mat']};
+                otherwise
+                    disp('ERROR!')
+            end
+        end
 
         switch flag
             case 'linear'
@@ -40,7 +64,7 @@ for m={'linear', 'nonlinear', 'longlag_linear', 'longlag_nonlinear'}
 end
 toc;
 
-function [normalized_signals, Hv, Kalman_H, S_No, ERRs, terms_chosen] = make_terms(flag, max_lag, scale_type, threshold, postfix, trial)
+function [normalized_signals, Hv, Kalman_H, S_No, ERRs, terms_chosen] = make_terms(flag, max_lag, scale_type, threshold, postfix, trial, id_wgci)
     format long;
     root = '../data/';
 
@@ -91,19 +115,8 @@ function [normalized_signals, Hv, Kalman_H, S_No, ERRs, terms_chosen] = make_ter
     end
     %%
 
-    % % 数据存储
-    % normalized_signals100 = zeros(100, 2048, 5);
-    % Kalman_H100 = zeros(100, 5, 2048-max_lag, 5);
-    % S_No100 = zeros(100, 5, len1);
-    % ERRs100 = zeros(100, 5, 5);
-    % terms_chosen100 = zeros(100, 5, 5);
-
     %% !基于RFOLS 算法的候选项选择器
-    [H, Hv] = buildH(normalized_signals, norder, max_lag);
-    [Kalman_H, ~, ~, S_No, ERRs] = term_selector(normalized_signals, norder, max_lag, H, threshold);
-    terms_chosen = S_No(:, 1:threshold);   % threshold 为候选项的个数
-    % normalized_signals100(trial, :, :) = normalized_signals;
-    % Kalman_H100(trial, :, :, :) = Kalman_H;
-    % ERRs100(trial, :, :) = ERRs;
-    % terms_chosen100(trial, :, :) = terms_chosen;
+        [H, Hv] = buildH(normalized_signals, norder, max_lag, id_wgci);
+        [Kalman_H, ~, ~, S_No, ERRs] = term_selector(normalized_signals, norder, max_lag, H, threshold);
+        terms_chosen = S_No(:, 1:threshold);   % threshold 为候选项的个数
 end

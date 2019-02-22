@@ -68,7 +68,7 @@ function [] = make_terms(flag, is_normalize, max_lag, scale_type, threshold)
     %%
 
     %% !基于RFOLS 算法的候选项选择器
-    [H, Hv] = buildH(normalized_signals, norder, max_lag);
+    [H, Hv] = buildH(normalized_signals, norder, max_lag, 0);
     [Kalman_H, sparse_H, S, S_No, ERRs] = term_selector(normalized_signals, norder, max_lag, H, threshold);
     terms_chosen = S_No(:, 1:threshold);   % threshold 为候选项的个数
 
