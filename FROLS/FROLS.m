@@ -12,7 +12,7 @@
 % and spatio-temporal domains[M]. Wiley, 2013.
 %
 
-function [coff, yerror, terms_chosen, ERR] = FROLS(norder, signals, max_lag, N, threshold, y)
+function [coff, yerror, terms_chosen, ERR] = FROLS(norder, signals, max_lag, N, threshold, y, id_except)
     % 调用的函数： generateH、frols_fixed
     % generateH 和 frols_fixed 都是该主函数的辅助函数
     % norder: 非线性次数
@@ -22,6 +22,7 @@ function [coff, yerror, terms_chosen, ERR] = FROLS(norder, signals, max_lag, N, 
     % terms_chosen: 被选择的候选项下标(threshold相关)
     % threshold: 算法停止的阈值
     % y: 当前的输出信号或者对应信号(输出子系统) NN * 1
+    % id_except: 排除在外的信号编号,==0表示计算所有信号
     % coff: 对应于候选项的系数, 前 sum(lags) 行为线性项的系数，其余为非线性项系数
     %
     % 全局变量
@@ -31,7 +32,14 @@ function [coff, yerror, terms_chosen, ERR] = FROLS(norder, signals, max_lag, N, 
     % 候选向量不考虑误差项的系数，我们认为误差是一个常数
     % 候选向量的个数，-1是减去常数项(也可以看成是误差项的一部分)
     [NN, ndim] = size(signals);
-    lags_sum = ndim * max_lag;
+    if id_except == 0
+        lags_sum = ndim * max_lag;
+        range = 1:ndim;
+    else
+        lags_sum = (ndim - 1) * max_lag;
+        range = setdiff(1:ndim, id_except);
+    end
+
     M = nchoosek(lags_sum + norder, norder) - 1;
     % 估计系数 实际上是按照真实位置把g重新组合了一下
     % 初始化过程
@@ -45,7 +53,7 @@ function [coff, yerror, terms_chosen, ERR] = FROLS(norder, signals, max_lag, N, 
     y = y((max_lag+1):(max_lag+N));
 
     % H 矩阵线性部分(base)
-    for variable=1:ndim
+    for variable=range
         for lag = 1:max_lag
             H(:, col_H) = signals((max_lag-lag+1):(max_lag-lag+N), variable);
             col_H = col_H + 1;

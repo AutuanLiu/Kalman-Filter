@@ -185,11 +185,16 @@ class Kalman4ARX(KalmanFilter):
             z_s: (np.ndarray) 经过滤波器后观测值的估计值
         """
 
+        # z_s = []
+        # for time, z in enumerate(self.signals[:(self.max_lag - 1):-1]):
+        #     z_s.append(self.filter(self.N - 1 - time, z.reshape(-1, 1)))
+        # self.z_s = np.array(z_s).squeeze()
+        # return self.x, self.P, self.z_s[::-1]
         z_s = []
-        for time, z in enumerate(self.signals[:(self.max_lag - 1):-1]):
-            z_s.append(self.filter(self.N - 1 - time, z.reshape(-1, 1)))
+        for time, z in enumerate(self.signals[self.max_lag:]):
+            z_s.append(self.filter(time + self.max_lag, z.reshape(-1, 1)))
         self.z_s = np.array(z_s).squeeze()
-        return self.x, self.P, self.z_s[::-1]
+        return self.x, self.P, self.z_s
 
     def smoother(self):
         """根据 forward 和 backward 得到的数值进行光滑处理，参考文献 3
@@ -431,7 +436,7 @@ class Kalman4FROLS(KalmanFilter):
         return self.x, self.P, self.z_s
 
     def backward(self):
-        """滤波器的后向操作。这里使用同一个滤波器先进行前行操作，之后进行后向操作的连续过程，参看
+        """滤波器的后向操作。这里使用同一个滤波器先进行前向操作，之后进行后向操作的连续过程，参看
         smoother 方法，避免使用两个滤波器，在进行后向操作还要使用前向操作的最终状态进行初始化的问题。
 
         Returns:
