@@ -97,13 +97,13 @@ class TermsData(Dataset):
 
         super().__init__()
         n_dim, n_point, _ = Kalman_H.shape
-        max_lag = signals.shape[0] - Kalman_H.shape[1]
+        self.max_lag = signals.shape[0] - Kalman_H.shape[1]
         data = []
         for t in range(n_point):
             Cn = np.kron(np.eye(n_dim), Kalman_H[:, t, :])
             data.append(Cn[slice(0, Cn.shape[0], n_dim + 1)])
         self.data = torch.as_tensor(np.array(data)).float()
-        self.target = torch.as_tensor(signals[max_lag:]).float()
+        self.target = torch.as_tensor(signals[self.max_lag:]).float()
 
     def __getitem__(self, index):
         return self.data[index], self.target[index]

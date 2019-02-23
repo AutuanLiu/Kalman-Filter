@@ -18,6 +18,7 @@ Copyright:
 from copy import deepcopy
 
 import numpy as np
+import torch
 from filterpy.common import reshape_z
 from filterpy.kalman import KalmanFilter
 from numpy import dot, eye, zeros
@@ -39,6 +40,7 @@ class Kalman4ARX(KalmanFilter):
         aic (float): Akaike information criterion.
         bic (float): Bayesian information criterion.
         mse_loss (float): mean square error loss.
+        y_error(np.ndarray): 预测误差
     """
 
     def __init__(self, signals, max_lag=3, uc=0.0001):
@@ -185,16 +187,15 @@ class Kalman4ARX(KalmanFilter):
             z_s: (np.ndarray) 经过滤波器后观测值的估计值
         """
 
-        # z_s = []
-        # for time, z in enumerate(self.signals[:(self.max_lag - 1):-1]):
-        #     z_s.append(self.filter(self.N - 1 - time, z.reshape(-1, 1)))
-        # self.z_s = np.array(z_s).squeeze()
-        # return self.x, self.P, self.z_s[::-1]
+        # 使用最终状态并反向迭代
         z_s = []
-        for time, z in enumerate(self.signals[self.max_lag:]):
-            z_s.append(self.filter(time + self.max_lag, z.reshape(-1, 1)))
+        for time, z in enumerate(self.signals[:(self.max_lag - 1):-1]):
+            z_s.append(self.filter(self.N - 1 - time, z.reshape(-1, 1)))
         self.z_s = np.array(z_s).squeeze()
-        return self.x, self.P, self.z_s
+        return self.x, self.P, self.z_s[::-1]
+
+        # 使用最终状态并正向迭代
+        # self.forward()
 
     def smoother(self):
         """根据 forward 和 backward 得到的数值进行光滑处理，参考文献 3
@@ -288,6 +289,10 @@ class Kalman4ARX(KalmanFilter):
     def mse_loss(self):
         return np.sum((self.z_s - self.signals[self.max_lag:])**2) / (self.N - self.max_lag)
 
+    @property
+    def y_error(self):
+        return self.signals[self.max_lag:] - self.z_s
+
 
 class Kalman4FROLS(KalmanFilter):
     """定义适用于估计NARX时间序列模型系数的 kalman filter。
@@ -299,6 +304,7 @@ class Kalman4FROLS(KalmanFilter):
         N (int): 信号的有效长度
         ndim (int): 信号的维数
         uc (float): update coefficient.
+        y_error(np.ndarray): 预测误差
     """
 
     def __init__(self, signals, Kalman_H, uc=0.0001):
@@ -445,11 +451,15 @@ class Kalman4FROLS(KalmanFilter):
             z_s: (np.ndarray) 经过滤波器后观测值的估计值
         """
 
+        # 使用最终状态并反向迭代
         z_s = []
         for time, z in enumerate(self.signals[:(self.max_lag - 1):-1]):
             z_s.append(self.filter(self.N - 1 - time, z.reshape(-1, 1)))
         self.z_s = np.array(z_s).squeeze()
         return self.x, self.P, self.z_s[::-1]
+
+        # 使用最终状态并正向迭代
+        # self.forward()
 
     def smoother(self):
         """根据 forward 和 backward 得到的数值进行光滑处理，参考文献 3
@@ -494,6 +504,10 @@ class Kalman4FROLS(KalmanFilter):
         y_coef = x_s.T.reshape(self.ndim, -1)    # 重新排列系数为 ndim x (ndim * p)
         return y_coef
 
+    @property
+    def y_error(self):
+        return self.signals[self.max_lag:] - self.z_s
+
 
 class torch4FROLS:
     def __init__(self, signals, Kalman_H, n_epoch=50, batchsize=32, learning_rate=0.001):
@@ -507,7 +521,6 @@ class torch4FROLS:
             learning_rate(int, optional): Defaults to 0.001.
         """
 
-        import torch
         from .regression import regression4torch, TermsData
         from torch.utils.data import DataLoader
         self.device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
@@ -528,7 +541,7 @@ class torch4FROLS:
         self.model.train()
 
         def _train():
-            for batch_idx, (data, target) in enumerate(self.loader):
+            for data, target in self.loader:
                 data, target = data.to(self.device), target.to(self.device)
                 self.optimizer.zero_grad()
                 output = self.model(data)
@@ -539,7 +552,22 @@ class torch4FROLS:
 
         for _ in range(self.n_epoch):
             _train()
-        return self.model.weight.detach().cpu().numpy().reshape(self.n_dim, -1)
+        self.coef_est = self.model.weight.detach().cpu().numpy().reshape(self.n_dim, -1)
+        return self.coef_est
+
+    @torch.no_grad()
+    def _test(self):
+        self.model.eval()
+        error = []
+        for data, target in self.loader:
+            data, target = data.to(self.device), target.to(self.device)
+            output = self.model(data)
+            error.extend((target - output).cpu().numpy())
+        return np.asarray(error)
+
+    @property
+    def y_error(self):
+        return self._test()
 
 
 # !原生代码和此处的问题有区别，暂时不可直接使用

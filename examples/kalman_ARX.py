@@ -55,10 +55,6 @@ for t in range(n_trial):
 y_coef /= n_trial
 A_coef /= n_trial
 
-# 保存结果2D
-# Write the array to disk
-file_path0 = Path('./data/y_coef.txt')
-save_2Darray(file_path0, y_coef)
 
 # 保存结果3D
 # Write the array to disk
