@@ -7,9 +7,10 @@ Copyright:
 """
 
 import numpy as np
+import scipy.io as sio
 
-from kalman_estimation import (Kalman4ARX, Kalman4FROLS, Selector, get_mat_data, get_terms_matrix, get_txt_data, make_func4K4FROLS, make_linear_func,
-                               plot_term_ERR, save_3Darray, torch4FROLS, save_2Darray)
+from kalman_estimation import (Kalman4ARX, Kalman4FROLS, Selector, get_terms_matrix, get_txt_data, make_func4K4FROLS, make_linear_func, plot_term_ERR,
+                               save_3Darray, torch4FROLS, save_2Darray)
 
 
 def get_json_data(fname):
@@ -35,33 +36,50 @@ def kalman4ARX_pipeline(data_type, configs, n_trial):
     """
 
     config = configs[data_type]
-    if data_type == 'linear':
-        y_coef100 = np.zeros((100, 5, 25))
-    else:
-        y_coef100 = np.zeros((100, 5, 50))
+    WGCI100 = []
     for trial in range(n_trial):
         # 计算总体情况
         term_selector = Selector(f"{config['data_root']}{data_type}{config['term_path']}{trial+1}.mat")
         # get data
         normalized_signals = term_selector.make_selection()[0]
-        fname = f"{config['data_root']}{data_type}_kalman4ARX100_{config['est_fname']}{trial+1}.txt"
         print(f'data_type: {data_type}, trial: ### {trial+1}')
         # 构造 Kalman Filter
         kf = Kalman4ARX(normalized_signals, config['max_lag'], uc=config['uc'])
         # 估计系数
         y_coef, A_coef = kf.estimate_coef(config['threshold'])
-        print(kf.y_error)
-        y_coef100[trial] = y_coef
-    fname1 = f"{config['data_root']}{data_type}_kalman4ARX100_{config['est_fname']}log.txt"
-    save_3Darray(fname1, y_coef100)
-    mean_y = np.mean(y_coef100, 0)
-    var_y = np.var(y_coef100, 0)
-    print(mean_y, var_y, sep='\n')
-    fname1 = f"{config['data_root']}{data_type}_kalman4ARX100_{config['est_fname']}log100.txt"
-    save_3Darray(fname1, np.array([mean_y, var_y]))
+        # 总体误差
+        whole_y_error = np.var(kf.y_error, 0)
+
+        # 子模型情况
+        terms_mat = sio.loadmat(f"{config['data_root']}{data_type}{config['term_path']}_WGCI{trial+1}.mat")
+        sub1 = []
+        for ch in range(5):
+            data_set = {
+                'normalized_signals': terms_mat['normalized_signals'],
+                'Hv': terms_mat['Hv'],
+                'Kalman_H': terms_mat['Kalman_H'][0, ch],
+                'terms_chosen': terms_mat['terms_chosen'][0, ch]
+            }
+            term_selector = Selector(data_set)
+            # get data
+            normalized_signals = term_selector.make_selection()[0]
+            # 构造 Kalman Filter
+            kf = Kalman4ARX(normalized_signals, config['max_lag'], uc=config['uc'])
+            # 估计系数
+            y_coef, A_coef = kf.estimate_coef(config['threshold'])
+            # 误差
+            sub_y_error = np.var(kf.y_error, 0)
+            sub1.append(np.log(sub_y_error / whole_y_error))
+        WGCI100.append(np.asarray(sub1).T)
+
+    mean_WGCI = np.mean(WGCI100, 0)
+    var_WGCI = np.var(WGCI100, 0)
+    print(f"mean_WGCI = {mean_WGCI}, var_WGCI = {var_WGCI}")
+    fname1 = f"{config['data_root']}{data_type}_kalman4ARX100_{config['est_fname']}WGCI100.txt"
+    save_3Darray(fname1, np.array([mean_WGCI * (mean_WGCI > 0.01), var_WGCI * (var_WGCI > 0.01)]))
 
 
-def kalman4FROLS_pipeline(data_type, configs, n_trial, id_correct, n_correct):
+def kalman4FROLS_pipeline(data_type, configs, n_trial):
     """基于 Kalman 滤波器的各个算法的 pipeline
 
     Args:
@@ -71,26 +89,47 @@ def kalman4FROLS_pipeline(data_type, configs, n_trial, id_correct, n_correct):
     """
 
     config = configs[data_type]
-    y_coef100 = np.zeros((100, 5, 5))
-    y_coef9 = np.zeros((100, 9))
+    WGCI100 = []
     for trial in range(n_trial):
-        fname = f"{config['data_root']}{data_type}_kalman4FROLS100_{config['est_fname']}{trial+1}.txt"
         term_selector = Selector(f"{config['data_root']}{data_type}{config['term_path']}{trial+1}.mat")
-        terms_set = term_selector.make_terms()
         # get data
         normalized_signals, Kalman_H, candidate_terms, Kalman_S_No = term_selector.make_selection()
         print(f'data_type: {data_type}, trial: ### {trial+1}')
         # 构造 Kalman Filter
         kf = Kalman4FROLS(normalized_signals, Kalman_H=Kalman_H, uc=config['uc'])
         y_coef = kf.estimate_coef()
-        y_coef100[trial] = y_coef
-    fname1 = f"{config['data_root']}{data_type}_kalman4FROLS100_{config['est_fname']}log.txt"
-    save_3Darray(fname1, y_coef100)
-    mean_y = np.mean(y_coef9, 0)
-    var_y = np.var(y_coef9, 0)
-    print(mean_y, var_y, sep='\n')
-    fname1 = f"{config['data_root']}{data_type}_kalman4FROLS100_{config['est_fname']}log100.txt"
-    save_2Darray(fname1, np.array([mean_y, var_y]).T)
+        print(y_coef)
+        # 总体误差
+
+        whole_y_error = np.var(kf.y_error, 0)
+
+        # 子模型情况
+        terms_mat = sio.loadmat(f"{config['data_root']}{data_type}{config['term_path']}_WGCI{trial+1}.mat")
+        sub1 = []
+        for ch in range(5):
+            data_set = {
+                'normalized_signals': terms_mat['normalized_signals'],
+                'Hv': terms_mat['Hv'],
+                'Kalman_H': terms_mat['Kalman_H'][0, ch],
+                'terms_chosen': terms_mat['terms_chosen'][0, ch]
+            }
+            term_selector = Selector(data_set)
+            # get data
+            normalized_signals = term_selector.make_selection()[0]
+            # 构造 Kalman Filter
+            kf = Kalman4FROLS(normalized_signals, Kalman_H=Kalman_H, uc=config['uc'])
+            # 估计系数
+            y_coef = kf.estimate_coef()
+            # 误差
+            sub_y_error = np.var(kf.y_error, 0)
+            sub1.append(np.log(sub_y_error / whole_y_error))
+        WGCI100.append(np.asarray(sub1).T)
+
+    mean_WGCI = np.mean(WGCI100, 0)
+    var_WGCI = np.var(WGCI100, 0)
+    print(f"mean_WGCI = {mean_WGCI}, var_WGCI = {var_WGCI}")
+    fname1 = f"{config['data_root']}{data_type}_kalman4FROLS100_{config['est_fname']}WGCI100.txt"
+    save_3Darray(fname1, np.array([mean_WGCI * (mean_WGCI > 0.01), var_WGCI * (var_WGCI > 0.01)]))
 
 
 def torch4FROLS_pipeline(data_type, configs, n_trial):
@@ -103,31 +142,41 @@ def torch4FROLS_pipeline(data_type, configs, n_trial):
     """
 
     config = configs[data_type]
-    y_coef100 = np.zeros((100, 5, 5))
-    y_coef9 = np.zeros((100, 9))
+    WGCI100 = []
     for trial in range(n_trial):
-        fname = f"{config['data_root']}{data_type}_torch4FROLS100_{config['est_fname']}{trial+1}.txt"
         term_selector = Selector(f"{config['data_root']}{data_type}{config['term_path']}{trial+1}.mat")
-        terms_set = term_selector.make_terms()
         # get data
         normalized_signals, Kalman_H, candidate_terms, Kalman_S_No = term_selector.make_selection()
         print(f'data_type: {data_type}, trial: ### {trial+1}')
         kf = torch4FROLS(normalized_signals, Kalman_H=Kalman_H, n_epoch=config['n_epoch'])
         y_coef = kf.estimate_coef()
-        y_coef100[trial] = y_coef
-        coef9 = []
-        Kalman_S_No_order = np.sort(Kalman_S_No)
-        for row in range(5):
-            for t in range(n_correct[row]):
-                idx = np.argwhere(Kalman_S_No_order[row, :] == id_correct[data_type][row][t])
-                value = y_coef[row, idx]
-                coef9.append(value[0, 0])
-        y_coef9[trial] = np.array(coef9)
+        # 总体误差
+        whole_y_error = np.var(kf.y_error, 0)
 
-    fname1 = f"{config['data_root']}{data_type}_torch4FROLS100_{config['est_fname']}log.txt"
-    save_3Darray(fname1, y_coef100)
-    mean_y = np.mean(y_coef9, 0)
-    var_y = np.var(y_coef9, 0)
-    print(mean_y, var_y, sep='\n')
-    fname1 = f"{config['data_root']}{data_type}_torch4FROLS100_{config['est_fname']}log100.txt"
-    save_2Darray(fname1, np.array([mean_y, var_y]).T)
+        # 子模型情况
+        terms_mat = sio.loadmat(f"{config['data_root']}{data_type}{config['term_path']}_WGCI{trial+1}.mat")
+        sub1 = []
+        for ch in range(5):
+            data_set = {
+                'normalized_signals': terms_mat['normalized_signals'],
+                'Hv': terms_mat['Hv'],
+                'Kalman_H': terms_mat['Kalman_H'][0, ch],
+                'terms_chosen': terms_mat['terms_chosen'][0, ch]
+            }
+            term_selector = Selector(data_set)
+            # get data
+            normalized_signals = term_selector.make_selection()[0]
+            # 构造 Kalman Filter
+            kf = torch4FROLS(normalized_signals, Kalman_H=Kalman_H, n_epoch=config['n_epoch'])
+            # 估计系数
+            y_coef = kf.estimate_coef()
+            # 误差
+            sub_y_error = np.var(kf.y_error, 0)
+            sub1.append(np.log(sub_y_error / whole_y_error))
+        WGCI100.append(np.asarray(sub1).T)
+
+    mean_WGCI = np.mean(WGCI100, 0)
+    var_WGCI = np.var(WGCI100, 0)
+    print(f"mean_WGCI = {mean_WGCI}, var_WGCI = {var_WGCI}")
+    fname1 = f"{config['data_root']}{data_type}_kalman4FROLS100_{config['est_fname']}WGCI100.txt"
+    save_3Darray(fname1, np.array([mean_WGCI * (mean_WGCI > 0.01), var_WGCI * (var_WGCI > 0.01)]))

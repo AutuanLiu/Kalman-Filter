@@ -55,7 +55,6 @@ for t in range(n_trial):
 y_coef /= n_trial
 A_coef /= n_trial
 
-
 # 保存结果3D
 # Write the array to disk
 file_path1 = Path('./data/A_coef.txt')

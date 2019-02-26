@@ -29,16 +29,14 @@ for m={'linear', 'nonlinear', 'longlag_linear', 'longlag_nonlinear'}
                     disp('saving important data without WGCI ......');
                     name_set = {['linear_terms', int2str(trial), '.mat'], ['nonlinear_terms', int2str(trial), '.mat'], ['longlag_linear_terms', int2str(trial), '.mat'], ['longlag_nonlinear_terms', int2str(trial), '.mat']};
                 case 1
-                    Kalman_H = cell(ndim, ndim);
-                    ERRs = cell(ndim, ndim);
-                    terms_chosen = cell(ndim, ndim);
-                    for ch = 1:ndim
-                        for id = 1:ndim
-                            [normalized_signals, Hv, Kalman_H1, S_No, ERRs1, terms_chosen1] = make_terms(flag, max_lag, scale_type, threshold, '_signals5D_noise100.mat', trial, id);
-                            Kalman_H{ch, id} = Kalman_H1;
-                            ERRs{ch, id} = ERRs1;
-                            terms_chosen{ch, id} = terms_chosen1;
-                        end
+                    Kalman_H = cell(1, ndim);
+                    ERRs = cell(1, ndim);
+                    terms_chosen = cell(1, ndim);
+                    for id = 1:ndim
+                        [normalized_signals, Hv, Kalman_H1, S_No, ERRs1, terms_chosen1] = make_terms(flag, max_lag, scale_type, threshold, '_signals5D_noise100.mat', trial, id);
+                        Kalman_H{1, id} = Kalman_H1;
+                        ERRs{1, id} = ERRs1;
+                        terms_chosen{1, id} = terms_chosen1;
                     end
                     % 保存重要数据
                     disp('saving important data with WGCI ......');
