@@ -146,6 +146,9 @@ $$P_k\leftarrow (I-G_k H_k)P_k$$
 13. [autoregressive model - Different state-space representations for Auto-Regression and Kalman filter - Signal Processing Stack Exchange](https://dsp.stackexchange.com/questions/2197/different-state-space-representations-for-auto-regression-and-kalman-filter)
 14. [14_state_space.pdf](http://www-stat.wharton.upenn.edu/~stine/stat910/lectures/14_state_space.pdf)
 15. [kalman.pdf](https://eml.berkeley.edu/~rothenbe/Fall2007/kalman.pdf)
+16. Linderman, S. W., Johnson, M. J., Miller, A. C., Adams, R. P., Blei, D. M., & Paninski, L. (2017). Bayesian Learning and Inference in Recurrent Switching Linear Dynamical Systems. Proceedings of the 20th International Conference on Artificial Intelligence and Statistics, 54, 914–922.
+17. Sieb, M., Schultheis, M., & Szelag, S. (2018). Probabilistic Trajectory Segmentation by Means of Hierarchical Dirichlet Process Switching Linear Dynamical Systems. Retrieved from http://arxiv.org/abs/1806.06063
+18. E. B. Fox, “Bayesian nonparametric learning of com- plex dynamical phenomena,” 2009
 
 ## Info
 
