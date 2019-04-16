@@ -149,6 +149,7 @@ $$P_k\leftarrow (I-G_k H_k)P_k$$
 16. Linderman, S. W., Johnson, M. J., Miller, A. C., Adams, R. P., Blei, D. M., & Paninski, L. (2017). Bayesian Learning and Inference in Recurrent Switching Linear Dynamical Systems. Proceedings of the 20th International Conference on Artificial Intelligence and Statistics, 54, 914–922.
 17. Sieb, M., Schultheis, M., & Szelag, S. (2018). Probabilistic Trajectory Segmentation by Means of Hierarchical Dirichlet Process Switching Linear Dynamical Systems. Retrieved from http://arxiv.org/abs/1806.06063
 18. E. B. Fox, “Bayesian nonparametric learning of com- plex dynamical phenomena,” 2009
+19. A. Fasoula, Y. Attal, and D. Schwartz, “Comparative performance evaluation of data-driven causality measures applied to brain networks,” J. Neurosci. Methods, vol. 215, no. 2, pp. 170–189, 2013.
 
 ## Info
 

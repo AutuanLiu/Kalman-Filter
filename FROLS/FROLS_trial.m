@@ -11,21 +11,25 @@ data_type = {'linear', 'nonlinear', 'longlag_linear', 'longlag_nonlinear'};
 data_root = '../data/';
 n_trial = 100;
 is_same = 0;  % 是否使用同一组数据，即是使用一组数据进行100次实验还是使用不同的100组数据进行100次实验
+ndim = 20; % {5, 10, 20}
+n_term = 5; % 保留的项数
 
 for m=data_type
     flag = m{1, 1};
-    coef_est100 = zeros(100, 5, 5);
-    ERRs100 = zeros(100, 5, 5);
-    terms_chosen100 = zeros(100, 5, 5);
+    coef_est100 = zeros(100, ndim, n_term);
+    ERRs100 = zeros(100, ndim, n_term);
+    terms_chosen100 = zeros(100, ndim, n_term);
     for trial=1:n_trial
         disp(['### ', int2str(trial)]);
         if is_same == 1
-            [coef_est, terms_chosen, ERRs, ~] = FROLS_estimator(data_root, flag, '_signals5D_noise1.mat', 0, 0);
+            fn = ['_signals', int2str(ndim), 'D_noise1.mat'];
+            [coef_est, terms_chosen, ERRs, ~] = FROLS_estimator(data_root, flag, fn, 0, 0);
         else
-            [coef_est, terms_chosen, ERRs, ~] = FROLS_estimator(data_root, flag, '_signals5D_noise100.mat', trial, 0);
+            fn = ['_signals', int2str(ndim), 'D_noise100.mat'];
+            [coef_est, terms_chosen, ERRs, ~] = FROLS_estimator(data_root, flag, fn, trial, 0);
         end
-        coef_est5 = zeros(5, 5);
-        for row=1:5
+        coef_est5 = zeros(ndim, n_term);
+        for row=1:ndim
             coef_est5(row, :) = coef_est(row, terms_chosen(row, :));
         end
         coef_est100(trial, :, :) = coef_est5;
@@ -38,7 +42,7 @@ for m=data_type
     var_coef = squeeze(var(coef_est100, 1));
 
     % 保存估计系数
-    f_name = [data_root, 'FROLS_', flag, '_est100.mat'];
+    f_name = [data_root, 'FROLS_', int2str(ndim), flag, '_est100.mat'];
     save(f_name, 'coef_est100', 'terms_chosen100', 'ERRs100', 'mean_coef', 'var_coef');
 end
 %%

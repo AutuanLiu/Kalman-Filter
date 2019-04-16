@@ -12,7 +12,7 @@ clear;
 scale_type = 'none';     % !set{'mapminmax', 'zscore'} 避免归一化
 max_lag = 10;   % 不影响结果
 threshold = 5;
-ndim = 5;  % 信号的通道数
+ndim = 5;  % 信号的通道数 {5, 10, 20}
 n_trial = 100;
 root = '../data/';
 
@@ -70,7 +70,7 @@ function [normalized_signals, Hv, Kalman_H, S_No, ERRs, terms_chosen] = make_ter
     switch flag
         case 'linear'
             norder = 1;
-            len1 = 25;
+            % len1 = 25;
             max_lag = 5;    % 最大时延
             load([root, flag, postfix]);   % linear signals
             signals = eval([flag, '_signals100']);
@@ -78,21 +78,21 @@ function [normalized_signals, Hv, Kalman_H, S_No, ERRs, terms_chosen] = make_ter
         case 'nonlinear'
             max_lag = 5;    % 最大时延
             norder = 2;
-            len1 = 350;
+            % len1 = 350;
             load([root, flag, postfix]);   % nonlinear signals
             signals = eval([flag, '_signals100']);
             signals = squeeze(signals(trial, :, :));
         case 'longlag_linear'
             max_lag = 10;    % 最大时延
             norder = 1;
-            len1 = 50;
+            % len1 = 50;
             load([root, flag, postfix]);   % longlag linear signals
             signals = eval([flag, '_signals100']);
             signals = squeeze(signals(trial, :, :));
         case 'longlag_nonlinear'
             max_lag = 10;    % 最大时延
             norder = 2;
-            len1 = 1325;
+            % len1 = 1325;
             load([root, flag, postfix]);   % longlag nonlinear signals
             signals = eval([flag, '_signals100']);
             signals = squeeze(signals(trial, :, :));
