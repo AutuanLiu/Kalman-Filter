@@ -4,8 +4,8 @@
 %
 clear; clc;
 %! 初始化设置
-npoint = 2048;      % 待研究或者采样的信号长度
-nlen = 2100;        % 仿真信号的总长度
+npoint = 10000;      % 待研究或者采样的信号长度
+nlen = 10100;        % 仿真信号的总长度
 nchannel = 5;       % 信号的维度
 max_lag = 20;       % 最大时延
 err_var = 1;        % 噪音的方差
@@ -31,6 +31,7 @@ end
 % 设置线性信号并保存仿真数据
 linear_signals = [x1, x2, x3, x4, x5];
 linear_signals = linear_signals((max_lag+1):(max_lag+npoint), :);
+linear_signals = zscore(linear_signals);
 plot(linear_signals);
 if flag == 1
     % 含有噪音
@@ -56,6 +57,7 @@ end
 % 设置非线性信号并保存仿真数据
 nonlinear_signals = [x1, x2, x3, x4, x5];
 nonlinear_signals = nonlinear_signals((max_lag+1):(max_lag+npoint), :);
+nonlinear_signals = zscore(nonlinear_signals);
 plot(nonlinear_signals);
 if flag == 1
     % 含有噪音
@@ -81,6 +83,7 @@ end
 % 设置线性信号并保存仿真数据
 longlag_linear_signals = [x1, x2, x3, x4, x5];
 longlag_linear_signals = longlag_linear_signals((max_lag+1):(max_lag+npoint), :);
+longlag_linear_signals = zscore(longlag_linear_signals);
 plot(longlag_linear_signals);
 if flag == 1
     % 含有噪音
@@ -106,6 +109,7 @@ end
 % 设置长时延非线性信号并保存仿真数据
 longlag_nonlinear_signals = [x1, x2, x3, x4, x5];
 longlag_nonlinear_signals = longlag_nonlinear_signals((max_lag+1):(max_lag+npoint), :);
+longlag_nonlinear_signals = zscore(longlag_nonlinear_signals);
 plot(longlag_nonlinear_signals);
 if flag == 1
     % 含有噪音
