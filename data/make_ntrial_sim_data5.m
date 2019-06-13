@@ -7,8 +7,8 @@ clear; clc;
 npoint = 2048;      % 待研究或者采样的信号长度
 nlen = 2100;        % 仿真信号的总长度
 nchannel = 5;       % 信号的维度
-max_lag = 20;       % 最大时延
-err_var = 1;        % 噪音的方差
+max_lag = 10;       % 最大时延
+err_var = 4;        % 噪音的方差
 flag = 1;           % 是否设置噪音, ==0 表示不设置噪音
 err_mean = 0;       % 噪音的均值
 ntrial = 100;       % 实验次数
@@ -56,45 +56,48 @@ for trial=1:ntrial
     nonlinear_signals = zscore(nonlinear_signals);
 
     %%! 长时延线性信号
-    for t=(max_lag + 1):nlen  % 信号时域
-        x1(t) = 0.95*sqrt(2) * x1(t-1) - 0.9025 * x1(t-2) + noise(t, 1);
-        x2(t) = 0.5 * x1(t-10) + noise(t, 2);
-        x3(t) = -0.4 * x1(t-3) + noise(t, 3);
-        x4(t) = -0.5 * x1(t-2) + 0.25*sqrt(2) * x4(t-1) + 0.25*sqrt(2) * x5(t-1) + noise(t, 4);
-        x5(t) = -0.25*sqrt(2) * x4(t-1) + 0.25*sqrt(2) * x5(t-1) + noise(t, 5);
-    end
+    % for t=(max_lag + 1):nlen  % 信号时域
+    %     x1(t) = 0.95*sqrt(2) * x1(t-1) - 0.9025 * x1(t-2) + noise(t, 1);
+    %     x2(t) = 0.5 * x1(t-10) + noise(t, 2);
+    %     x3(t) = -0.4 * x1(t-3) + noise(t, 3);
+    %     x4(t) = -0.5 * x1(t-2) + 0.25*sqrt(2) * x4(t-1) + 0.25*sqrt(2) * x5(t-1) + noise(t, 4);
+    %     x5(t) = -0.25*sqrt(2) * x4(t-1) + 0.25*sqrt(2) * x5(t-1) + noise(t, 5);
+    % end
 
-    % 设置线性信号并保存仿真数据
-    longlag_linear_signals = [x1, x2, x3, x4, x5];
-    longlag_linear_signals = longlag_linear_signals((max_lag+1):(max_lag+npoint), :);
-    longlag_linear_signals = zscore(longlag_linear_signals);
+    % 设置长时延线性信号并保存仿真数据
+    % longlag_linear_signals = [x1, x2, x3, x4, x5];
+    % longlag_linear_signals = longlag_linear_signals((max_lag+1):(max_lag+npoint), :);
+    % longlag_linear_signals = zscore(longlag_linear_signals);
 
     %%! 长时延非线性信号
-    for t=(max_lag + 1):nlen  % 信号时域
-        x1(t) = 0.95*sqrt(2) * x1(t-1) - 0.9025 * x1(t-2) + noise(t, 1);
-        x2(t) = 0.5 * x1(t-10) * x1(t-10) + noise(t, 2);
-        x3(t) = -0.4 * x1(t-3) + noise(t, 3);
-        x4(t) = -0.5 * x1(t-2) * x1(t-2) + 0.25*sqrt(2) * x4(t-1) + 0.25*sqrt(2) * x5(t-1) + noise(t, 4);
-        x5(t) = -0.25*sqrt(2) * x4(t-1) + 0.25*sqrt(2) * x5(t-1) + noise(t, 5);
-    end
+    % for t=(max_lag + 1):nlen  % 信号时域
+    %     x1(t) = 0.95*sqrt(2) * x1(t-1) - 0.9025 * x1(t-2) + noise(t, 1);
+    %     x2(t) = 0.5 * x1(t-10) * x1(t-10) + noise(t, 2);
+    %     x3(t) = -0.4 * x1(t-3) + noise(t, 3);
+    %     x4(t) = -0.5 * x1(t-2) * x1(t-2) + 0.25*sqrt(2) * x4(t-1) + 0.25*sqrt(2) * x5(t-1) + noise(t, 4);
+    %     x5(t) = -0.25*sqrt(2) * x4(t-1) + 0.25*sqrt(2) * x5(t-1) + noise(t, 5);
+    % end
 
     % 设置长时延非线性信号并保存仿真数据
-    longlag_nonlinear_signals = [x1, x2, x3, x4, x5];
-    longlag_nonlinear_signals = longlag_nonlinear_signals((max_lag+1):(max_lag+npoint), :);
-    longlag_nonlinear_signals = zscore(longlag_nonlinear_signals);
+    % longlag_nonlinear_signals = [x1, x2, x3, x4, x5];
+    % longlag_nonlinear_signals = longlag_nonlinear_signals((max_lag+1):(max_lag+npoint), :);
+    % longlag_nonlinear_signals = zscore(longlag_nonlinear_signals);
 
     % 数据保存
     linear_signals100(trial, :, :) = linear_signals;
     nonlinear_signals100(trial, :, :) = nonlinear_signals;
-    longlag_linear_signals100(trial, :, :) = longlag_linear_signals;
-    longlag_nonlinear_signals100(trial, :, :) = longlag_nonlinear_signals;
+    % longlag_linear_signals100(trial, :, :) = longlag_linear_signals;
+    % longlag_nonlinear_signals100(trial, :, :) = longlag_nonlinear_signals;
 end
 
 % 保存信号数据
-save('linear_signals5D_noise100.mat', 'linear_signals100');
-save('nonlinear_signals5D_noise100.mat', 'nonlinear_signals100');
-save('longlag_linear_signals5D_noise100.mat', 'longlag_linear_signals100');
-save('longlag_nonlinear_signals5D_noise100.mat', 'longlag_nonlinear_signals100');
+save(['linear_signals5D_noise100_', sprintf('%2.2f', err_var), '.mat'], 'linear_signals100');
+save(['nonlinear_signals5D_noise100_', sprintf('%2.2f', err_var), '.mat'], 'nonlinear_signals100');
+% save('longlag_linear_signals5D_noise100.mat', 'longlag_linear_signals100');
+% save('longlag_nonlinear_signals5D_noise100.mat', 'longlag_nonlinear_signals100');
+
+% 平稳性检验
+stationary_test;
 
 function noise = make_noise(npoint, nchannel, mean_v, variance, flag)
     % flag == 0 表示不加噪音

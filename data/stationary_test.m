@@ -1,4 +1,5 @@
-types = {'linear_signals', 'nonlinear_signals', 'longlag_linear_signals', 'longlag_nonlinear_signals'};
+% types = {'linear_signals', 'nonlinear_signals', 'longlag_linear_signals', 'longlag_nonlinear_signals'};
+types = {'linear_signals', 'nonlinear_signals'};
 ndim = size(types, 2);
 % 一开始假设序列三平稳的
 ret = true(1, ndim);
