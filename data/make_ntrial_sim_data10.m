@@ -12,8 +12,8 @@ clear; clc;
 npoint = 2048; % 待研究或者采样的信号长度
 nlen = 2100; % 仿真信号的总长度
 nchannel = 10; % 信号的维度
-max_lag = 20; % 最大时延
-err_var = 1; % 噪音的方差
+max_lag = 10; % 最大时延
+err_var = 4; % 噪音的方差
 flag = 1; % 是否设置噪音
 err_mean = 0; % 噪音的均值
 ntrial = 100; % 实验次数
