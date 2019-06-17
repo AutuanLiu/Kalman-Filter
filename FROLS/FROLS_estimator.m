@@ -11,11 +11,13 @@ function [coef_est, terms_chosen, ERRs, y_error] = FROLS_estimator(root, flag, p
     % wgci: 是否是计算 WGCI 模式
     %
     disp([flag, ' signals calculated!'])
+    max_lag = 10;    % 最大时延
+    threshold = 5;  % 候选项个数
     switch flag
         case 'linear'
             load([root, flag, postfix]);
-            max_lag = 5;    % 最大时延
-            threshold = 5;  % 候选项个数
+            % max_lag = 5;    % 最大时延
+            % threshold = 5;  % 候选项个数
             if trial == 0
                 signals = eval([flag, '_signals']);   % 模型的数据
             else
@@ -27,8 +29,8 @@ function [coef_est, terms_chosen, ERRs, y_error] = FROLS_estimator(root, flag, p
             N = NN - max_lag;
         case 'nonlinear'
             load([root, flag, postfix]);
-            max_lag = 5;    % 最大时延
-            threshold = 5;  % 候选项个数
+            % max_lag = 5;    % 最大时延
+            % threshold = 5;  % 候选项个数
             if trial == 0
                 signals = eval([flag, '_signals']);   % 模型的数据
             else
@@ -40,8 +42,8 @@ function [coef_est, terms_chosen, ERRs, y_error] = FROLS_estimator(root, flag, p
             N = NN - max_lag;
         case 'longlag_linear'
             load([root, flag, postfix]);
-            max_lag = 10;    % 最大时延
-            threshold = 5;  % 候选项个数
+            % max_lag = 10;    % 最大时延
+            % threshold = 5;  % 候选项个数
             if trial == 0
                 signals = eval([flag, '_signals']);   % 模型的数据
             else
@@ -53,8 +55,8 @@ function [coef_est, terms_chosen, ERRs, y_error] = FROLS_estimator(root, flag, p
             N = NN - max_lag;
         case 'longlag_nonlinear'
             load([root, flag, postfix]);
-            max_lag = 10;    % 最大时延
-            threshold = 5;  % 候选项个数
+            % max_lag = 10;    % 最大时延
+            % threshold = 5;  % 候选项个数
             if trial == 0
                 signals = eval([flag, '_signals']);   % 模型的数据
             else
