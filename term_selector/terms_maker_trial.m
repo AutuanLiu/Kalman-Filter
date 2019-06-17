@@ -49,7 +49,7 @@ for err_var = [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4]
                         %     disp('ERROR!')
                         % end
                     % end
-                    
+
                 % 保存重要数据
                 % disp('saving important data with WGCI ......');
                 disp('saving important data ......');
@@ -72,7 +72,7 @@ end
 toc;
 
 function [normalized_signals, Hv, Kalman_H, S_No, ERRs, terms_chosen] = make_terms(flag, max_lag, scale_type, threshold, postfix, trial, id_wgci)
-    format long;
+    % format long;
     root = '../data/';
 
     % 读取数据
@@ -80,26 +80,26 @@ function [normalized_signals, Hv, Kalman_H, S_No, ERRs, terms_chosen] = make_ter
         case 'linear'
             norder = 1;
             % len1 = 25;
-            max_lag = 5;    % 最大时延
+            % max_lag = 5;    % 最大时延
             load([root, flag, postfix]);   % linear signals
             signals = eval([flag, '_signals100']);
             signals = squeeze(signals(trial, :, :));
         case 'nonlinear'
-            max_lag = 5;    % 最大时延
+            % max_lag = 5;    % 最大时延
             norder = 2;
             % len1 = 350;
             load([root, flag, postfix]);   % nonlinear signals
             signals = eval([flag, '_signals100']);
             signals = squeeze(signals(trial, :, :));
         case 'longlag_linear'
-            max_lag = 10;    % 最大时延
+            % max_lag = 10;    % 最大时延
             norder = 1;
             % len1 = 50;
             load([root, flag, postfix]);   % longlag linear signals
             signals = eval([flag, '_signals100']);
             signals = squeeze(signals(trial, :, :));
         case 'longlag_nonlinear'
-            max_lag = 10;    % 最大时延
+            % max_lag = 10;    % 最大时延
             norder = 2;
             % len1 = 1325;
             load([root, flag, postfix]);   % longlag nonlinear signals
