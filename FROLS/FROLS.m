@@ -182,6 +182,6 @@ function [L, g, A, ERR] = frols_fixed(y, P, threshold)
     end
     % 考虑提前终止迭代的情况
     A = A(1:j, 1:j);
-    ERR = chosenERR(1, 1:5);
+    ERR = chosenERR(1, 1:threshold);
     return;
 end
