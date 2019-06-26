@@ -7,16 +7,15 @@ clear; clc;
 npoint = 2048;      % 待研究或者采样的信号长度
 nlen = 2100;        % 仿真信号的总长度
 nchannel = 5;       % 信号的维度
-max_lag = 10;       % 最大时延
-err_var = 3;        % 噪音的方差
-flag = 1;           % 是否设置噪音, ==0 表示不设置噪音
+max_lag = 20;       % 最大时延
+err_var = 4;        % 噪音的方差
 err_mean = 0;       % 噪音的均值
-ntrial = 100;       % 实验次数
+ntrial = 50;       % 实验次数
 % 数据
 linear_signals100 = zeros(ntrial, npoint, nchannel);
 nonlinear_signals100 = zeros(ntrial, npoint, nchannel);
-longlag_linear_signals100 = zeros(ntrial, npoint, nchannel);
-longlag_nonlinear_signals100 = zeros(ntrial, npoint, nchannel);
+% longlag_linear_signals100 = zeros(ntrial, npoint, nchannel);
+% longlag_nonlinear_signals100 = zeros(ntrial, npoint, nchannel);
 
 for trial=1:ntrial
     noise = make_noise(nlen, nchannel, err_mean, err_var, flag);
@@ -39,7 +38,7 @@ for trial=1:ntrial
     % 设置线性信号并保存仿真数据
     linear_signals = [x1, x2, x3, x4, x5];
     linear_signals = linear_signals((max_lag+1):(max_lag+npoint), :);
-    linear_signals = zscore(linear_signals);
+    % linear_signals = zscore(linear_signals);
 
     %%! 非线性信号
     for t=(max_lag + 1):nlen  % 信号时域
@@ -53,7 +52,7 @@ for trial=1:ntrial
     % 设置非线性信号并保存仿真数据
     nonlinear_signals = [x1, x2, x3, x4, x5];
     nonlinear_signals = nonlinear_signals((max_lag+1):(max_lag+npoint), :);
-    nonlinear_signals = zscore(nonlinear_signals);
+    % nonlinear_signals = zscore(nonlinear_signals);
 
     %%! 长时延线性信号
     % for t=(max_lag + 1):nlen  % 信号时域
@@ -98,6 +97,8 @@ save(['nonlinear_signals5D_noise100_', sprintf('%2.2f', err_var), '.mat'], 'nonl
 
 % 平稳性检验
 stationary_test;
+
+% FROLS 检验
 
 function noise = make_noise(npoint, nchannel, mean_v, variance, flag)
     % flag == 0 表示不加噪音

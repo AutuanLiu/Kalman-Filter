@@ -12,9 +12,8 @@ clear; clc;
 npoint = 2048;      % 待研究或者采样的信号长度
 nlen = 2100;        % 仿真信号的总长度
 nchannel = 20;       % 信号的维度
-max_lag = 20;       % 最大时延
+max_lag = 10;       % 最大时延
 err_var = 1;        % 噪音的方差
-flag = 1;           % 是否设置噪音
 err_mean = 0;       % 噪音的均值
 ntrial = 100;       % 实验次数
 % 数据
@@ -74,7 +73,7 @@ for trial=1:ntrial
     % 设置线性信号并保存仿真数据
     linear_signals = [x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20];
     linear_signals = linear_signals((max_lag+1):(max_lag+npoint), :);
-    linear_signals = zscore(linear_signals);
+    % linear_signals = zscore(linear_signals);
 
     %%! 非线性信号
     for t=(max_lag + 1):nlen  % 信号时域
@@ -104,7 +103,7 @@ for trial=1:ntrial
     % 设置非线性信号并保存仿真数据
     nonlinear_signals = [x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20];
     nonlinear_signals = nonlinear_signals((max_lag+1):(max_lag+npoint), :);
-    nonlinear_signals = zscore(nonlinear_signals);
+    % nonlinear_signals = zscore(nonlinear_signals);
 
     %%! 长时延线性信号
     for t=(max_lag + 1):nlen  % 信号时域
@@ -133,7 +132,7 @@ for trial=1:ntrial
     % 设置线性信号并保存仿真数据
     longlag_linear_signals = [x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20];
     longlag_linear_signals = longlag_linear_signals((max_lag+1):(max_lag+npoint), :);
-    longlag_linear_signals = zscore(longlag_linear_signals);
+    % longlag_linear_signals = zscore(longlag_linear_signals);
 
     %%! 长时延非线性信号
     for t=(max_lag + 1):nlen  % 信号时域
@@ -163,7 +162,7 @@ for trial=1:ntrial
     % 设置长时延非线性信号并保存仿真数据
     longlag_nonlinear_signals = [x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20];
     longlag_nonlinear_signals = longlag_nonlinear_signals((max_lag+1):(max_lag+npoint), :);
-    longlag_nonlinear_signals = zscore(longlag_nonlinear_signals);
+    % longlag_nonlinear_signals = zscore(longlag_nonlinear_signals);
 
     % 数据保存
     linear_signals100(trial, :, :) = linear_signals;
