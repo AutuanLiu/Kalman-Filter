@@ -41,9 +41,14 @@ Email: autuanliu@163.com
   - [Reference](#Reference)
   - [Info](#Info)
 
-Notes: **所有的原始数据文件可以在[百度云](https://pan.baidu.com/s/1Dem2PMWZEZYZbSmUsBq3aA)或者[网易云](https://workuse.nos-eastchina1.126.net/Github/Data/sim_AR_data.tar.gz)下载**
+Notes: **所有的原始数据文件可以使用data目录下的matlab代码生成**
 
 
+* 本库包含四种自回归模型系数估计的算法
+  * FROLS
+  * bi-KF
+  * FROKF（暂未发表，但可用, 引用请联系作者）
+  * bi-KF-SGD（暂未发表，但可用, 引用请联系作者）
 
 * 主题
 
@@ -52,7 +57,8 @@ Notes: **所有的原始数据文件可以在[百度云](https://pan.baidu.com/s
   * 系数估计
   * 格兰杰因果
   * FROLS（Forward-Regression Orthogonal Least Square）
-  * FROKF（暂未发表，但可用）
+  * FROKF（暂未发表，但可用, 引用请联系作者）
+  * SGD
 
 * FROKF 系数估计
 
@@ -60,7 +66,9 @@ Notes: **所有的原始数据文件可以在[百度云](https://pan.baidu.com/s
 
 * FROKF 效果示意
 
-  * 估计系数的均值比较![估计系数的均值比较](/home/lyc/Github/Kalman-Filter/images/coef_com_mean.png)
+  * 估计系数的均值比较
+  
+   ![估计系数的均值比较](./images/coef_com_mean.png)
 
   * 估计系数的方差比较
 
