@@ -15,17 +15,22 @@ def corr_term(y_coef, terms_set, Kalman_S_No, var_name: str = 'x', step_name: st
     return func_repr
 
 
-def frokf(noise_var, ndim, dtype, terms, length, root='../data/', trials=100, uc=0.01):
+def frokf(noise_var, ndim, dtype, terms, length, root='../data/', trials=100, uc=0.01, ntest=50):
     assert dtype in ['linear', 'nonlinear'], 'type not support!'
     ax = []
-    for trial in tqdm(range(1, trials + 1)):
+    for trial in range(1, trials + 1):
+#     for trial in [trials]:
         terms_path = root + f'{dtype}_terms{ndim}D_{noise_var:2.2f}trial{trial}.mat'
         term = Selector(terms_path)
         _ = term.make_terms()
         normalized_signals, Kalman_H, candidate_terms, Kalman_S_No = term.make_selection()
-        Kalman_S_No = np.sort(Kalman_S_No)
-        kf = Kalman4FROLS(normalized_signals, Kalman_H=Kalman_H, uc=uc)
-        y_coef = kf.estimate_coef()
+        # Kalman_S_No = np.sort(Kalman_S_No)
+        y_coef = 0
+        # 对FROKF多次实验取平均值
+        for _ in trange(ntest):
+            kf = Kalman4FROLS(normalized_signals, Kalman_H=Kalman_H, uc=uc)
+            y_coef += kf.estimate_coef()
+        y_coef /= ntest
         terms_set = corr_term(y_coef, candidate_terms, Kalman_S_No)
         flatten_coef, t = [], 0
         for i in range(ndim):
@@ -38,10 +43,10 @@ def frokf(noise_var, ndim, dtype, terms, length, root='../data/', trials=100, uc
     return np.stack(ax)
 
 
-def frols(noise_var, ndim, dtype, terms, length, root='../data/', trials=100):
+def frols(noise_var, ndim, dtype, terms, length, root='../data/', trial=1, trials=100):
     assert dtype in ['linear', 'nonlinear'], 'type not support!'
     terms_path = root + f'FROLS_{ndim}{dtype}_est100_{noise_var:2.2f}.mat'
-    terms_pathx = root + f'{dtype}_terms{ndim}D_0.50trial1.mat'
+    terms_pathx = root + f'{dtype}_terms{ndim}D_0.50trial{trial}.mat'
     term = Selector(terms_pathx)
     candidate_terms = term.make_terms()
     y_coef = get_mat_data(terms_path, 'coef_est100')

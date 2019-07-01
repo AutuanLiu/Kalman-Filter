@@ -12,10 +12,10 @@ clear;
 scale_type = 'none';     % !set{'mapminmax', 'zscore'} 避免归一化
 % data_type = {'linear', 'nonlinear', 'longlag_linear', 'longlag_nonlinear'};
 data_type = {'linear', 'nonlinear'};
-max_lag = 10;      % 不影响结果
+max_lag = 5;      % 不影响结果
 threshold = 5;
 ndim = 5;          % 信号的通道数 {5, 10, 20}
-n_trial = 100;
+n_trial = 1;
 root = '../data/';
 
 for err_var = [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4]
@@ -24,6 +24,7 @@ for err_var = [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4]
             flag = m{1, 1};             % !set{'linear', 'nonlinear', 'longlag_linear', 'longlag_nonlinear'}
             disp(['data_type: ', flag, '    ndim: ', int2str(ndim), '    err_var: ', sprintf('%2.2f', err_var)])
             for trial = 1:n_trial
+            % for trial = n_trial
                 disp([flag, ' trial ### ', int2str(trial)]);
                 % is_wgci 是否计算和 WGCI 相关的数据
                 % for is_wgci = [0, 1]
@@ -91,20 +92,20 @@ function [normalized_signals, Hv, Kalman_H, S_No, ERRs, terms_chosen] = make_ter
             load([root, flag, postfix]);   % nonlinear signals
             signals = eval([flag, '_signals100']);
             signals = squeeze(signals(trial, :, :));
-        case 'longlag_linear'
-            % max_lag = 10;    % 最大时延
-            norder = 1;
-            % len1 = 50;
-            load([root, flag, postfix]);   % longlag linear signals
-            signals = eval([flag, '_signals100']);
-            signals = squeeze(signals(trial, :, :));
-        case 'longlag_nonlinear'
-            % max_lag = 10;    % 最大时延
-            norder = 2;
-            % len1 = 1325;
-            load([root, flag, postfix]);   % longlag nonlinear signals
-            signals = eval([flag, '_signals100']);
-            signals = squeeze(signals(trial, :, :));
+        % case 'longlag_linear'
+        %     % max_lag = 10;    % 最大时延
+        %     norder = 1;
+        %     % len1 = 50;
+        %     load([root, flag, postfix]);   % longlag linear signals
+        %     signals = eval([flag, '_signals100']);
+        %     signals = squeeze(signals(trial, :, :));
+        % case 'longlag_nonlinear'
+        %     % max_lag = 10;    % 最大时延
+        %     norder = 2;
+        %     % len1 = 1325;
+        %     load([root, flag, postfix]);   % longlag nonlinear signals
+        %     signals = eval([flag, '_signals100']);
+        %     signals = squeeze(signals(trial, :, :));
         otherwise
             disp('Not Define!')
     end

@@ -65,7 +65,8 @@ function [Kalman_H, sparse_H, S, S_No, ERRs] = term_selector(signals, norder, ma
         %         sparse_H(y_No, :, L(k)) = H(:, L(k));
         %     end
         % end
-        idx = sort(L(1, 1:threshold));
+        % idx = sort(L(1, 1:threshold));
+        idx = L(1, 1:threshold);
         S(y_No, idx) = 1;
         sparse_H(y_No, :, idx) = H(:, idx);
         Kalman_H(y_No, :, :) = H(:, idx);

@@ -64,8 +64,11 @@ class Kalman4ARX(KalmanFilter):
         self.init()
 
     def init(self):
-        self.x = np.random.randn(self.dim_x, 1)    # 初始状态初始化为 (0, 1) 正态分布
-        self.Q = self.uc * eye(self.dim_x)    # 文献1的初始化方式，若使用文献3的初始化方式，注释掉该行
+        self.x = np.random.randn(self.dim_x, 1)  # 初始状态初始化为 (0, 1) 正态分布
+
+        # self.Q = eye(self.dim_x)    # 文献3的初始化方式
+        self.Q = self.uc * eye(self.dim_x)  # 文献1的初始化方式
+        
         self.H = self.measurement_matrix(self.max_lag)    # 初始时的测量矩阵
         self.z = self.signals[self.max_lag].reshape(-1, 1)    # 初始时的测量值
 
@@ -209,16 +212,16 @@ class Kalman4ARX(KalmanFilter):
         return x_s
 
     def update_R(self, z):
-        # update R, 文献 3
+        # update R, 文献 3, 文献1同文献3
         residual = self.residual_of(z)
         self.R = (1 - self.uc) * self.R + self.uc * dot(residual, residual.T)
 
     def update_Q(self):
         # update Q, 文献 3
-        self.Q = self.uc * self._I * np.trace(self.P_prior) / (self.max_lag * self.N)
+        # self.Q = self.uc * self._I * np.trace(self.P_prior) / (self.max_lag * self.N)
 
         # update Q, 文献 1
-        # self.Q = self.uc * self._I
+        self.Q = self.uc * self._I
 
     def update_H(self, time):
         # update H, 文献1, 3, 测量矩阵会随时间变化
@@ -236,7 +239,10 @@ class Kalman4ARX(KalmanFilter):
         """
 
         A_coef = []
+        # 考虑是否使用双向光滑
         x_s = self.smoother()
+        # 不使用双向滤波器
+        # x_s, *_ = self.forward()
         x_s[np.abs(x_s) < threshold] = 0.    # 阈值处理
         y_coef = x_s.T.reshape(self.ndim, -1)    # 重新排列系数为 ndim x (ndim * p)
 
@@ -330,8 +336,11 @@ class Kalman4FROLS(KalmanFilter):
         self.init()
 
     def init(self):
-        self.x = np.random.randn(self.dim_x, 1)    # 初始状态初始化为 (0, 1) 正态分布
-        self.Q = self.uc * eye(self.dim_x)    # 文献1的初始化方式，若使用文献3的初始化方式，注释掉该行
+        self.x = np.random.randn(self.dim_x, 1)  # 初始状态初始化为 (0, 1) 正态分布
+        
+        self.Q = self.uc * eye(self.dim_x)    # 文献1的初始化方式
+        # self.Q = eye(self.dim_x)    # 文献3的初始化方式
+
         self.H = self.measurement_matrix(0)    # 初始时的测量矩阵
         self.z = self.signals[self.max_lag].reshape(-1, 1)    # 初始时的测量值
 
@@ -470,6 +479,8 @@ class Kalman4FROLS(KalmanFilter):
         factor1 = self.inv(self.inv(P_f) + self.inv(P_b))
         factor2 = dot(self.inv(P_f), x_f) + dot(self.inv(P_b), x_b)
         x_s = dot(factor1, factor2)
+        # 使用单向滤波器, 如果使用双向滤波器注销下面一行
+        # x_s = x_f
         return x_s
 
     def update_R(self, z):
@@ -479,10 +490,10 @@ class Kalman4FROLS(KalmanFilter):
 
     def update_Q(self):
         # update Q, 文献 3
-        self.Q = self.uc * self._I * np.trace(self.P_prior) / (self.max_lag * self.N)
+        # self.Q = self.uc * self._I * np.trace(self.P_prior) / (self.max_lag * self.N)
 
         # update Q, 文献 1
-        # self.Q = self.uc * self._I
+        self.Q = self.uc * self._I
 
     def update_H(self, time):
         # update H, 文献1, 3, 测量矩阵会随时间变化

@@ -10,20 +10,19 @@ tic;
 % data_type = {'linear', 'nonlinear', 'longlag_linear', 'longlag_nonlinear'};
 data_type = {'linear', 'nonlinear'};
 data_root = '../data/';
-n_trial = 100;
-% err_var = 2; % {0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4}
+n_trial = 1;
 is_same = 0;   % 是否使用同一组数据，即是使用一组数据进行100次实验还是使用不同的100组数据进行100次实验
-% ndim = 5;    % {5, 10, 20}
 n_term = 5;    % 保留的项数
 for err_var = [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4]
     for ndim=[5, 10]
         for m=data_type
             flag = m{1, 1};
             disp(['data_type: ', flag, '    ndim: ', int2str(ndim), '    err_var: ', sprintf('%2.2f', err_var)])
-            coef_est100 = zeros(100, ndim, n_term);
-            ERRs100 = zeros(100, ndim, n_term);
-            terms_chosen100 = zeros(100, ndim, n_term);
+            coef_est100 = zeros(n_trial, ndim, n_term);
+            ERRs100 = zeros(n_trial, ndim, n_term);
+            terms_chosen100 = zeros(n_trial, ndim, n_term);
             for trial=1:n_trial
+            % for trial=n_trial
                 disp(['### ', int2str(trial)]);
                 if is_same == 1
                     fn = ['_signals', int2str(ndim), 'D_noise1.mat'];
