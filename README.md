@@ -1,3 +1,5 @@
+
+
 # Kalman filter estimation
 
 ```bash
@@ -40,6 +42,33 @@ Email: autuanliu@163.com
   - [Info](#info)
 
 Notes: **所有的原始数据文件可以在[百度云](https://pan.baidu.com/s/1Dem2PMWZEZYZbSmUsBq3aA)或者[网易云](https://workuse.nos-eastchina1.126.net/Github/Data/sim_AR_data.tar.gz)下载**
+
+
+
+* 主题
+
+  * 卡尔曼滤波器
+  * 自回归模型
+  * 系数估计
+  * 格兰杰因果
+  * FROLS（Forward-Regression Orthogonal Least Square）
+  * FROKF（未发表，但可用）
+
+* FROKF 系数估计
+
+  ![FROKF](./images/steps.png)
+
+* FROKF 效果示意
+
+  * 估计系数的均值比较![估计系数的均值比较](/home/lyc/Github/Kalman-Filter/images/coef_com_mean.png)
+
+  * 估计系数的方差比较
+
+    ![估计系数的方差比较](./images/coef_com_var.png)
+
+  * 估计系数的误差比较
+
+    ![估计系数的误差比较](./images/coef_com_err.png)
 
 * 安装
 ```bash
@@ -155,21 +184,21 @@ $$P_k\leftarrow (I-G_k H_k)P_k$$
 
 ```bash
 $ cloc .
-      96 text files.
-      88 unique files.
-      79 files ignored.
+      95 text files.
+      91 unique files.                              
+      37 files ignored.
 
-github.com/AlDanial/cloc v 1.80  T=1.00 s (42.0 files/s, 3591.0 lines/s)
+github.com/AlDanial/cloc v 1.74  T=54.92 s (1.1 files/s, 98.8 lines/s)
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-Python                          18            413            666            849
-MATLAB                          12             78            250            548
-Markdown                         7            163              1            424
-JSON                             3              0              0            145
-YAML                             1             10              4             37
+MATLAB                          27            200            668           1336
+Python                          22            502            813           1157
+Markdown                         6            152              1            404
+JSON                             3              0              0            131
+YAML                             2             11              5             43
 Bourne Shell                     1              0              0              3
 -------------------------------------------------------------------------------
-SUM:                            42            664            921           2006
+SUM:                            61            865           1487           3074
 -------------------------------------------------------------------------------
 ```
