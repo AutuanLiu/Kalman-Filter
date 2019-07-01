@@ -27,8 +27,8 @@ Email: autuanliu@163.com
   - [Wiki](https://dev.azure.com/AutuanLiu/Kalman%20Filter/_wiki/wikis/Kalman-Filter.wiki?wikiVersion=GBwikiMaster&pagePath=%2FKalman%20filter%20estimation)
   - [Sourcegraph](https://sourcegraph.com/github.com/AutuanLiu/Kalman-Filter)
 
-- [Kalman filter estimation](#kalman-filter-estimation)
-  - [1 Theory](#1-theory)
+- [Kalman filter estimation](#Kalman-filter-estimation)
+  - [1 Theory](#1-Theory)
     - [1.1 线性一维系统](#11-%E7%BA%BF%E6%80%A7%E4%B8%80%E7%BB%B4%E7%B3%BB%E7%BB%9F)
       - [1.1.1 系统表示](#111-%E7%B3%BB%E7%BB%9F%E8%A1%A8%E7%A4%BA)
       - [1.1.2 计算过程](#112-%E8%AE%A1%E7%AE%97%E8%BF%87%E7%A8%8B)
@@ -38,8 +38,8 @@ Email: autuanliu@163.com
     - [1.3 非线性多维系统](#13-%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%A4%9A%E7%BB%B4%E7%B3%BB%E7%BB%9F)
       - [1.3.1 系统表示](#131-%E7%B3%BB%E7%BB%9F%E8%A1%A8%E7%A4%BA)
       - [1.3.2 计算过程](#132-%E8%AE%A1%E7%AE%97%E8%BF%87%E7%A8%8B)
-  - [Reference](#reference)
-  - [Info](#info)
+  - [Reference](#Reference)
+  - [Info](#Info)
 
 Notes: **所有的原始数据文件可以在[百度云](https://pan.baidu.com/s/1Dem2PMWZEZYZbSmUsBq3aA)或者[网易云](https://workuse.nos-eastchina1.126.net/Github/Data/sim_AR_data.tar.gz)下载**
 
@@ -52,7 +52,7 @@ Notes: **所有的原始数据文件可以在[百度云](https://pan.baidu.com/s
   * 系数估计
   * 格兰杰因果
   * FROLS（Forward-Regression Orthogonal Least Square）
-  * FROKF（未发表，但可用）
+  * FROKF（暂未发表，但可用）
 
 * FROKF 系数估计
 
